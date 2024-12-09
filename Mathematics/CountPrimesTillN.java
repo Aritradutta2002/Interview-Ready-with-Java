@@ -18,7 +18,12 @@ public class CountPrimesTillN {
     public static void main(String[] args) {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
+        System.out.println("Enter the last number : ");
 
+        int n = fs.nextInt();
+
+        System.out.println("Prime Numbers in between 2 and " + n + " are : ");
+        System.out.println(primeUptoN(n));
     }
 
 
@@ -27,7 +32,7 @@ public class CountPrimesTillN {
         Arrays.fill(prime, true);
 
         for(int i = 2; i*i <= n; i++) {
-            if(isPrime[i]) {
+            if(prime[i] == true) {
                 for(int j = i * i; j <= n; j += i) {
                     prime [j] = false;
                 }
@@ -35,7 +40,7 @@ public class CountPrimesTillN {
         }
         int count = 0;
         for(int i = 2; i <= n; i++) {
-            if(prime[i]) {
+            if(prime[i] == true) {
                 count++;
 
             }
