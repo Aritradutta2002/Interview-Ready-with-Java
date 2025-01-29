@@ -83,7 +83,7 @@ We love contributions! If you have a problem or solution you'd like to share, fo
 
 ## License
 
-This repository is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This repository is licensed under the Aritra Dutta.
 
 ## Contact
 
