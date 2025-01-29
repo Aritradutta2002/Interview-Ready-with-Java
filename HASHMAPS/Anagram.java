@@ -1,4 +1,5 @@
-package HASHMAPS;
+package com.aritra;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.lang.*;
 
@@ -31,7 +32,6 @@ public class Anagram {
                 System.out.println("They are anagram");
              else
                 System.out.println("Not Anagram");
-
 
     }
 }

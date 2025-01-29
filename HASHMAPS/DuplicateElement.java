@@ -1,4 +1,4 @@
-package HASHMAPS;
+package com.aritra;
 import java.lang.*;
 import java.util.*;
 public class DuplicateElement {

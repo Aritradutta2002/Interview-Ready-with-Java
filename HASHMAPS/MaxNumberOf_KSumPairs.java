@@ -1,4 +1,5 @@
-package HASHMAPS;
+package com.aritra;
+
 import java.util.*;
 import java.lang.*;
 public class MaxNumberOf_KSumPairs {

@@ -1,7 +1,8 @@
 /*
 It is a Leetcode Problem named "Valid Anagram"
 */
-package HASHMAPS;
+package com.aritra;
+
 import java.lang.*;
 import java.util.*;
 
