@@ -65,7 +65,7 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 
 1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/yourusername/cp-repo.git
+    git clone [github link] (https://github.com/yourusername/cp-repo.git)
     cd cp-repo
     ```
 
@@ -87,6 +87,6 @@ This repository is licensed under the Aritra Dutta.
 
 ## Contact
 
-For any questions or suggestions, feel free to reach out via GitHub issues or contact [your email address].
+For any questions or suggestions, feel free to reach out via GitHub issues or contact [email] (aritradutta511@gmail.com).
 
 Happy Coding!
