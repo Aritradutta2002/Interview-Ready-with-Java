@@ -8,41 +8,41 @@ This repository is dedicated to providing a comprehensive collection of competit
 
 ## Topics Covers --
 
-- **ARRAYS**
+- [ ] **ARRAYS**
 
-- **AllMixedCodes**
+- [ ] **AllMixedCodes**
 
-- **BASICS**
+- [ ] **BASICS**
 
-- **BINARY_SEARCH_ON_ANSWER**
+- [ ] **BINARY_SEARCH_ON_ANSWER**
 
-- **BINARY_TREES**
+- [ ] **BINARY_TREES**
 
-- **COLLECTION_FRAMEWORK**
+- [ ] **COLLECTION_FRAMEWORK**
 
-- **Contests**
+- [ ] **Contests**
 
-- **DYNAMIC_PROGRAMMING**
+- [ ] **DYNAMIC_PROGRAMMING**
 
-- **EXCEPTION_HANDILING**
+- [ ] **EXCEPTION_HANDILING**
 
-- **HASHING**
+- [ ] **HASHING**
 
-- **HASHMAPS**
+- [ ] **HASHMAPS**
 
-- **LINKED_LISTS**
+- [ ] **LINKED_LISTS**
 
-- **MATHEMATICS**
+- [ ] **MATHEMATICS**
 
-- **RECURSION**
+- [ ] **RECURSION**
 
-- **SEARCHING_TECHNIQUES**
+- [ ] **SEARCHING_TECHNIQUES**
 
-- **SORTING**
+- [ ] **SORTING**
 
-- **STRINGS**
+- [ ] **STRINGS**
 
-- **TWO_POINTER**
+- [ ] **TWO_POINTER**
  
 # Join me :')
 
