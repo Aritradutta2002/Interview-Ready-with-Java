@@ -9,76 +9,40 @@ This repository is dedicated to providing a comprehensive collection of competit
 ## Topics
 
 - **ARRAYS**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **AllMixedCodes**
-  - Status: Second
-  - Last Updated: Last month
 
 - **BASICS**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **BINARY_SEARCH_ON_ANSWER**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **BINARY_TREES**
-  - Status: First
-  - Last Updated: 1 hour ago
 
 - **COLLECTION_FRAMEWORK**
-  - Status: First
-  - Last Updated: 1 hour ago
 
 - **Contests**
-  - Status: First time
-  - Last Updated: Last month
 
 - **DYNAMIC_PROGRAMMING**
-  - Status: First time
-  - Last Updated: Last month
 
 - **EXCEPTION_HANDILING**
-  - Status: Corrected
-  - Last Updated: Last month
 
 - **HASHING**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **HASHMAPS**
-  - Status: First
-  - Last Updated: 1 hour ago
 
 - **LINKED_LISTS**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **MATHEMATICS**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **RECURSION**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **SEARCHING_TECHNIQUES**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **SORTING**
-  - Status: First
-  - Last Updated: 1 hour ago
 
 - **STRINGS**
-  - Status: Changed all
-  - Last Updated: Last month
 
 - **TWO_POINTER**
-  - Status: Changed all
-  - Last Updated: Last month
  
 # One Month Challenge :')
 
