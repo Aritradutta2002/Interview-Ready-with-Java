@@ -1,10 +1,10 @@
 # Cp Repository
 
-Welcome to the **Cp Repository** – your one-stop solution for competitive programming!
+Welcome to **My DSA Code Library** – your one-stop solution for Interview Prep DSA set!
 
 ## Overview
 
-This repository is dedicated to providing a comprehensive collection of competitive programming problems and solutions. Whether you're a beginner looking to hone your skills or an experienced coder aiming to stay sharp, this repository has something for everyone.
+This repository is dedicated to providing a comprehensive collection of Problem Solving some how also covers some CP (competitive programming) problems and solutions. Whether you're a beginner looking to hone your skills or an experienced coder aiming to stay sharp, this repository has something for everyone.
 
 ## Topics Covers --
 
