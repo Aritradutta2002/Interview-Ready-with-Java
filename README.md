@@ -1,4 +1,10 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cp Repository</title>
+</head>
 <body>
     <h1>Cp Repository</h1>
 
@@ -40,5 +46,3 @@ cd cp-repo</code></pre>
     <p>For any questions or suggestions, feel free to reach out via GitHub issues or contact [your email address].</p>
 
     <p>Happy Coding!</p>
-</body>
-</html>
