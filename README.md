@@ -6,7 +6,7 @@ Welcome to the **Cp Repository** – your one-stop solution for competitive prog
 
 This repository is dedicated to providing a comprehensive collection of competitive programming problems and solutions. Whether you're a beginner looking to hone your skills or an experienced coder aiming to stay sharp, this repository has something for everyone.
 
-## Topics
+## Topics Covers --
 
 - **ARRAYS**
 
@@ -44,11 +44,11 @@ This repository is dedicated to providing a comprehensive collection of competit
 
 - **TWO_POINTER**
  
-# One Month Challenge :')
+# Join me :')
 
 **Difficulty Levels solved :**
 
-🟢 Easy: 60 
+ 🟢 Easy: 60 
  🟡 Medium: 40 
  🔴 Hard:  20
  ⚫️ Very Hard: 5
