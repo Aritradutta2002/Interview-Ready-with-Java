@@ -65,7 +65,7 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 
 1. **Clone the Repository**:
     ```bash
-    git clone (https://github.com/yourusername/cp-repo.git)
+    git clone (https://github.com/Aritradutta2002/Java-DSA-2024)
     cd cp-repo
     ```
 
