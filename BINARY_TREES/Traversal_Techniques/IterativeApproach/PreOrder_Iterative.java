@@ -1,6 +1,5 @@
 package BINARY_TREES.Traversal_Techniques.IterativeApproach;
 
-import java.io.*;
 import java.util.*;
 
 /*
@@ -10,22 +9,22 @@ import java.util.*;
 public class PreOrder_Iterative {
 
     public static void main(String[] args) {
-        StructureBinaryTree root = new StructureBinaryTree(1);
-        root.left = new StructureBinaryTree(4);
-        root.left.left = new StructureBinaryTree(4);
-        root.left.right = new StructureBinaryTree(2);
+        BinaryTreeStructure root = new BinaryTreeStructure(1);
+        root.left = new BinaryTreeStructure(4);
+        root.left.left = new BinaryTreeStructure(4);
+        root.left.right = new BinaryTreeStructure(2);
 
         System.out.println(preOrder_Loop(root));
     }
 
-    static List<Integer> preOrder_Loop(StructureBinaryTree root) {
+    static List<Integer> preOrder_Loop(BinaryTreeStructure root) {
         List<Integer> list = new ArrayList<>();
 
         if (root == null) {
             return list;
         }
 
-        Stack<StructureBinaryTree> stack = new Stack<>();
+        Stack<BinaryTreeStructure> stack = new Stack<>();
         stack.push(root);
         while (!stack.isEmpty()) {
             root = stack.pop();

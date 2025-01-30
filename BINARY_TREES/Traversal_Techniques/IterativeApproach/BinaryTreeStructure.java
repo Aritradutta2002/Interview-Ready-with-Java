@@ -1,16 +1,15 @@
 package BINARY_TREES.Traversal_Techniques.IterativeApproach;
-import BINARY_TREES.Traversal_Techniques.RecursiveApproach.BinaryTreeNode;
 
 /*
  *   Author  : Aritra Dutta
  *   Created : Wednesday, 29.01.2025  09:21 pm
  */
-public class StructureBinaryTree {
+public class BinaryTreeStructure {
     int data;
-    StructureBinaryTree left;
-    StructureBinaryTree right;
+    BinaryTreeStructure left;
+    BinaryTreeStructure right;
 
-    public StructureBinaryTree(int data) {
+    public BinaryTreeStructure(int data) {
         this.data = data;
         left = null;
         right = null;
@@ -24,19 +23,19 @@ public class StructureBinaryTree {
         this.data = data;
     }
 
-    public StructureBinaryTree getLeft() {
+    public BinaryTreeStructure getLeft() {
         return left;
     }
 
-    public void setLeft(StructureBinaryTree left) {
+    public void setLeft(BinaryTreeStructure left) {
         this.left = left;
     }
 
-    public StructureBinaryTree getRight() {
+    public BinaryTreeStructure getRight() {
         return right;
     }
 
-    public void setRight(StructureBinaryTree right) {
+    public void setRight(BinaryTreeStructure right) {
         this.right = right;
     }
 }

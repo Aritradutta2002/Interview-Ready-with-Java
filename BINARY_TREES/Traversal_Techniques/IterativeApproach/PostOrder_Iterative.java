@@ -7,26 +7,26 @@ import java.util.*;
 
 public class PostOrder_Iterative {
     public static void main(String[] args) {
-        StructureBinaryTree root = new StructureBinaryTree(1);
-        root.left = new StructureBinaryTree(4);
-        root.left.left = new StructureBinaryTree(4);
-        root.left.right = new StructureBinaryTree(2);
+        BinaryTreeStructure root = new BinaryTreeStructure(1);
+        root.left = new BinaryTreeStructure(4);
+        root.left.left = new BinaryTreeStructure(4);
+        root.left.right = new BinaryTreeStructure(2);
 
         System.out.println(postorder(root));
     }
 
-    static List < Integer > postorder(StructureBinaryTree root) {
+    static List < Integer > postorder(BinaryTreeStructure root) {
 
         List < Integer > result = new ArrayList < > ();
         if (root == null) {
             return result;
         }
-        Stack < StructureBinaryTree > stack = new Stack < > ();
+        Stack <BinaryTreeStructure> stack = new Stack < > ();
         stack.push(root);
-        StructureBinaryTree prev = null;
+        BinaryTreeStructure prev = null;
 
         while (!stack.isEmpty()) {
-            StructureBinaryTree current = stack.peek();
+            BinaryTreeStructure current = stack.peek();
             if (prev == null || prev.left == current || prev.right == current) {
                 if (current.left != null)
                     stack.push(current.left);
