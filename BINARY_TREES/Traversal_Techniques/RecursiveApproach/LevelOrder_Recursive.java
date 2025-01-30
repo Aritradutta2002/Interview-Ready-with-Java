@@ -12,6 +12,5 @@ public class LevelOrder_Recursive {
         root.right.right = new BinaryTreeNode(7);
 
         root.LevelOrderTraversal(root);
-
     }
 }
