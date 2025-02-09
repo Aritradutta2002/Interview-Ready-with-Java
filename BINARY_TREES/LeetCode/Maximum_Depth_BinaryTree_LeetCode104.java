@@ -13,7 +13,6 @@ public class Maximum_Depth_BinaryTree_LeetCode104 {
         root.right.right = new TreeNode(7);
 
         System.out.println(maxDepth(root));;
-
     }
 
     public static int maxDepth(TreeNode root) {

@@ -4,37 +4,18 @@ package BINARY_TREES.LeetCode;
  *   Created : Friday, 31.01.2025  06:43 pm
  */
 public class TreeNode {
-    int data;
-    TreeNode left;
-    TreeNode right;
+    int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode() {}
 
-    public TreeNode(int data) {
-        this.data = data;
-        left = null;
-        right = null;
-    }
+      TreeNode(int val) {
+          this.val = val;
+      }
 
-    public int getData() {
-        return data;
-    }
-
-    public void setData(int data) {
-        this.data = data;
-    }
-
-    public TreeNode getLeft() {
-        return left;
-    }
-
-    public void setLeft(TreeNode left) {
-        this.left = left;
-    }
-
-    public TreeNode getRight() {
-        return right;
-    }
-
-    public void setRight(TreeNode right) {
-        this.right = right;
-    }
+      TreeNode(int val, TreeNode left, TreeNode right) {
+      this.val = val;
+      this.left = left;
+      this.right = right;
+     }
 }

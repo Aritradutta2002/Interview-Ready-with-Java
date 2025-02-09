@@ -22,7 +22,7 @@ public class Search_In_BinaryTree_LeetCode700 {
     public static TreeNode searchBST(TreeNode root, int val) {
         if(root == null) return null;
 
-        if(root.data == val) return root;
+        if(root.val == val) return root;
 
         TreeNode leftNode = searchBST(root.left, val);
 
