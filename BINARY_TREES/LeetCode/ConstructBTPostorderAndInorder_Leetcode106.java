@@ -1,7 +1,7 @@
 package BINARY_TREES.LeetCode;
 import java.util.*;
-//  Author  : Aritra Dutta
-//  Created : Sunday, 23.02.2025  08:44 pm
+/*      Author  : Aritra Dutta
+        Created : Sunday, 23.02.2025  08:44 pm   */
 /*
  * Definition for a binary tree node.
  * public class TreeNode {

@@ -1,9 +1,7 @@
 package BINARY_TREES.LeetCode;
 import java.util.*;
-/*
-*   Author  : Aritra Dutta
-*   Created : Sunday, 23.02.2025  09:20 pm
-*/
+/*      Author  : Aritra Dutta
+        Created : Sunday, 23.02.2025  08:44 pm   */
 
 /*
  * Definition for a binary tree node.
@@ -24,13 +22,5 @@ import java.util.*;
 public class ConstructBSTFromPreorder_Leetcode1008 {
     public static void main(String[] args){
 
-    }
-    static public TreeNode bstFromPreorder(int[] preorder) {
-
-    }
-
-    public TreeNode constructTree(int [] preorder) {
-        TreeNode root = new TreeNode(preorder[0]);
-        o
     }
 }
