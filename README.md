@@ -48,10 +48,10 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 
 **Difficulty Levels solved :**
 
- 🟢 Easy: 60 
- 🟡 Medium: 40 
- 🔴 Hard:  20
- ⚫️ Very Hard: 5
+ 🟢 Easy: 70
+ 🟡 Medium: 100
+ 🔴 Hard:  25
+ ⚫️ Very Hard: 10
  🌟 Good to review
 
 ## Features
