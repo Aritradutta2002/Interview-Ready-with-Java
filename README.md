@@ -1,6 +1,6 @@
-# Cp Repository
+# INTERVIEW READY WITH JAVA 
 
-Welcome to **My DSA Code Library** – your one-stop solution for Interview Prep DSA set!
+Welcome to **My DSA come Core Java Code Library** – your one-stop solution for Interview Prep DSA set!
 
 ## Overview
 
