@@ -11,7 +11,7 @@ import static java.lang.System.out;
 import java.io.*;
 import java.util.*;
 
-public class BinaryTreePath_LeetCode257 {
+public class BinaryTreePath_Leetcode257 {
     public static void main(String[] args) {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
@@ -28,10 +28,6 @@ public class BinaryTreePath_LeetCode257 {
         List<String> res = new ArrayList<>();
         TreeNode right = root.right;
         TreeNode left = root.left;
-
-        if(root == null){
-            return res;
-        }
 
         dfs(root, "", res);
 

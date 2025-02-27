@@ -22,7 +22,7 @@ public class BalancedBinaryTree{
         if (node == null) {
             return 0;
         }
-
+        
         int leftHeight = checkHeight(node.left);
         if (leftHeight == -1) return -1;
 
