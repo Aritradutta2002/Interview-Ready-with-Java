@@ -13,6 +13,8 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 - [ ] **AllMixedCodes**
 
 - [ ] **BASICS**
+     
+- [ ] **PREFIX_SUM**
 
 - [ ] **BINARY_SEARCH_ON_ANSWER**
 
@@ -43,6 +45,7 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 - [ ] **STRINGS**
 
 - [ ] **TWO_POINTER**
+     
  
 # Join me Today :)
 
