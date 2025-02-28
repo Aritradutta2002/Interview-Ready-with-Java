@@ -1,6 +1,6 @@
-# Cp Repository
+# INTERVIEW READY WITH JAVA 
 
-Welcome to **My DSA Code Library** – your one-stop solution for Interview Prep DSA set!
+Welcome to **My DSA come Core Java Code Library** – your one-stop solution for Interview Prep DSA set!
 
 ## Overview
 
@@ -13,6 +13,8 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 - [ ] **AllMixedCodes**
 
 - [ ] **BASICS**
+     
+- [ ] **PREFIX_SUM**
 
 - [ ] **BINARY_SEARCH_ON_ANSWER**
 
@@ -43,15 +45,16 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 - [ ] **STRINGS**
 
 - [ ] **TWO_POINTER**
+     
  
 # Join me Today :)
 
 **Difficulty Levels solved :**
 
- 🟢 Easy: 60 
- 🟡 Medium: 40 
- 🔴 Hard:  20
- ⚫️ Very Hard: 5
+ 🟢 Easy: 70
+ 🟡 Medium: 100
+ 🔴 Hard:  25
+ ⚫️ Very Hard: 10
  🌟 Good to review
 
 ## Features
@@ -65,7 +68,7 @@ This repository is dedicated to providing a comprehensive collection of Problem 
 
 1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/Aritradutta2002/Java-DSA-2024
+    git clone https://github.com/Aritradutta2002/Interview-Ready-with-Java.git
     cd cp-repo
     ```
 
