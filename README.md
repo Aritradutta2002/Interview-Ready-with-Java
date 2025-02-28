@@ -86,7 +86,7 @@ We love contributions! If you have a problem or solution you'd like to share, fo
 
 ## License
 
-This repository is licensed under the Aritra Dutta.
+This repository is licensed under the Aritra Dutta. Please follow me for more such contents - https://github.com/Aritradutta2002
 
 ## Contact
 
