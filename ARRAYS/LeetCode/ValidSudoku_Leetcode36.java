@@ -31,12 +31,10 @@ public class ValidSudoku_Leetcode36 {
                 {'.','.','.','.','8','.','.','7','9'}
         };
 
-
         System.out.println(isValidSudokuUsingBruteForce(board2));
         System.out.println(isValidSudokuUsingHashSet(board2));
         System.out.println(isValidSudokuUsingBitMask(board2));
     }
-
 /*
             Approach #1 Brute Force Approach using Loops
             i) Time Complexity - O(N*N)
