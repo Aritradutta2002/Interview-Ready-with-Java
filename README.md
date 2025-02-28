@@ -90,6 +90,6 @@ This repository is licensed under the Aritra Dutta.
 
 ## Contact
 
-For any questions or suggestions, feel free to reach out via GitHub issues or contact to email - aritradutta511@gmail.com
+``` For any questions or suggestions, feel free to reach out via GitHub issues or contact to email - aritradutta511@gmail.com ```
 
 Happy Coding!
