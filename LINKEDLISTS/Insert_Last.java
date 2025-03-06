@@ -1,4 +1,4 @@
-package LINKED_LISTS;
+package LINKEDLISTS;
 
 public class Insert_Last {
     static class Node{

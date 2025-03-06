@@ -1,4 +1,4 @@
-package LINKED_LISTS;
+package LINKEDLISTS;
 import java.util.*;
 import java.lang.*;
 
