@@ -4,35 +4,227 @@ import java.util.*;
 *   Author  : Aritra Dutta
 *   Created : Friday, 28.02.2025  12:10 pm
 */
-import static java.lang.Math.*;
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import static java.lang.System.out;
 import java.io.*;
 import java.util.*;
 import java.math.*;
+
 public class SudokuSolver_Leetcode37 {
-    public static void main(String[] args) {
+
+    public static final Random random = new Random();
+    public static final int mod = 1_000_000_007;
+
+    public static void main(String[] args) throws Exception{
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
+        char[][] board = {
+                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
 
-
-
+        solveSudoku(board);
+        printSudoku(board);
     }
 
-     public static void solveSudoku(char[][] board) {
-
+    public static void printSudoku(char[][] board) {
+        int n = board.length;
+        for (char[] rows : board) {
+            for (int col = 0; col < n; col++) {
+                System.out.print(rows[col] + " ");
+            }
+            System.out.println();
+        }
     }
+
+    public static boolean isValidSudoku(char[][] board, int row, int col, int num) {
+        for(int i = 0; i < 9; i++){
+            if(board[row][i] == num){
+                return false;
+            }
+        }
+
+        for(int j = 0; j < 9; j++){
+            if(board[j][col] == num){
+                return false;
+            }
+        }
+
+        int startRow = row - row % 3;
+        int startCol = col - col % 3;
+
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(board[startRow + i][startCol + j] == num){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean solveSudoku(char[][] board) {
+        int n = board.length;
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if (board[row][col] == '.') {
+                    for (char num = '1'; num <= '9'; num++) {
+                        if (isValidSudoku(board, row, col, num)) {
+                            board[row][col] = num;
+
+                            if (solveSudoku(board)) {
+                                return true;
+                            }
+
+                            board[row][col] = '.';
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    
+
 /*=================================================================================================================================================
-==================================================================================================================================================*/
+================================================================================================================================================= */
 
-    static final Random random = new Random();
-    static final int mod = 1_000_000_007;
+
+
+
+    /* ----------- BFS (Recursive) -------------- */
+
+    static void bfsRecursive(int start, List<List<Integer>> adj) {
+        Queue<Integer> q = new ArrayDeque<>();
+        boolean[] visited = new boolean[adj.size()];
+
+        q.add(start);
+        visited[start] = true;
+
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            out.print(u + " "); // Process node u
+
+            for (int v : adj.get(u)) {
+                if (!visited[v]) {
+                    visited[v] = true;
+                    q.add(v);
+                }
+            }
+        }
+    }
+
+    /* ------ Optimized BFS ------ */
+
+    static void bfsOptimized(int start, List<List<Integer>> adj) {
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        BitSet visited = new BitSet(adj.size());
+        q.add(start);
+        visited.set(start);
+
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            // Process node u here (if needed)
+
+            for (int v : adj.get(u)) {
+                if (!visited.get(v)) {
+                    visited.set(v);
+                    q.add(v);
+                }
+            }
+        }
+    }
+
+    /* ----- DFS (Recursive) ------- */
+
+    static void dfsRecursive(int u, List<List<Integer>> adj, boolean[] visited) {
+        visited[u] = true;
+        out.print(u + " "); // Process node u
+
+        for (int v : adj.get(u)) {
+            if (!visited[v]) {
+                dfsRecursive(v, adj, visited);
+            }
+        }
+    }
+
+    /* --------- Optimized DFS (Iterative) no recursion overhead ------- */
+
+    static void dfsOptimized(int start, List<List<Integer>> adj) {
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        BitSet visited = new BitSet(adj.size());
+        stack.push(start);
+        visited.set(start);
+
+        while (!stack.isEmpty()) {
+            int u = stack.pop();
+            // Process node u here (if needed)
+
+            for (int v : adj.get(u)) {
+                if (!visited.get(v)) {
+                    visited.set(v);
+                    stack.push(v);
+                }
+            }
+        }
+    }
+
+    /* -------- Graph Input Helper ----------- */
+
+    static List<Integer>[] createGraph(int nodes, int edges, FastScanner fs) {
+        List<Integer>[] adj = new ArrayList[nodes];
+        for (int i = 0; i < nodes; i++) adj[i] = new ArrayList<>();
+        for (int i = 0; i < edges; i++) {
+            int u = fs.nextInt() - 1, v = fs.nextInt() - 1;
+            adj[u].add(v);
+            adj[v].add(u); // Remove if directed graph
+        }
+        return adj;
+    }
+
+    /*------ Dijkstra's Algorithm -----*/
+
+    static int[] dijkstra(int src, List<int[]>[] adj) {
+        int n = adj.length;
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        pq.add(new int[]{src, 0});
+
+        while (!pq.isEmpty()) {
+            int[] node = pq.poll();
+            int u = node[0], d = node[1];
+            if (d > dist[u]) continue;
+
+            for (int[] edge : adj[u]) {
+                int v = edge[0], weight = edge[1];
+                if (dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                    pq.add(new int[]{v, dist[v]});
+                }
+            }
+        }
+        return dist;
+    }
+
+    /* ============================== Math Utilities ======================================= */
 
     public static boolean isPrime(long n) {
-        if(n < 2) {
-            return false;
-        }
+        if(n < 2) return false;
         if(n == 2 || n == 3) return true;
         if(n%2 == 0 || n%3 == 0) return false;
         long sqrtN = (long)Math.sqrt(n)+1;
@@ -41,6 +233,38 @@ public class SudokuSolver_Leetcode37 {
         }
         return true;
     }
+
+    /* ------- Sieve Of Eratosthenes ---------------- */
+
+    public static List<Integer> sieve(int n) {
+        List<Integer> primes = new ArrayList<>();
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+
+        for (int i = 2; i <= n; i++) {
+            if (isPrime[i]) {
+                primes.add(i);
+                for (int j = 2 * i; j <= n; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+        return primes;
+    }
+
+    /* ------ Modular Exponentiation (x^y % mod) ------- */
+
+    static long modPow(long x, long y, long mod) {
+        long res = 1;
+        while (y > 0) {
+            if ((y & 1) == 1) res = (res * x) % mod;
+            x = (x * x) % mod;
+            y >>= 1;
+        }
+        return res;
+    }
+
 
     static void ruffleSort(int[] a) {
         int n = a.length;// shuffle, then sort
@@ -63,8 +287,8 @@ public class SudokuSolver_Leetcode37 {
 
     public static void print(int[] arr) {
         //for debugging only
-        for (var ele : arr)
-            out.print(ele + " ");
+        for (int x : arr)
+            out.print(x + " ");
         out.println();
     }
 
