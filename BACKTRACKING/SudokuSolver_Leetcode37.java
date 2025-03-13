@@ -34,6 +34,7 @@ public class SudokuSolver_Leetcode37 {
 
         solveSudoku(board);
         printSudoku(board);
+
     }
 
     public static void printSudoku(char[][] board) {
