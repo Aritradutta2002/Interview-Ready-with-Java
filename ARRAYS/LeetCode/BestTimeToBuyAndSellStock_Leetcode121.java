@@ -22,7 +22,6 @@ public class BestTimeToBuyAndSellStock_Leetcode121 {
             maxProfit = Math.max(maxProfit, (price  - minProfit));
             minProfit = Math.min(minProfit, price);
         }
-
         return maxProfit;
     }
 }
