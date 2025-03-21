@@ -9,9 +9,8 @@ import static java.lang.Math.abs;
 import static java.lang.System.out;
 import java.io.*;
 import java.util.*;
-import java.math.*;
 
-public class PermutationsII_Leetcode46 {
+public class PermutationsII_Leetcode47 {
 
     public static final Random random = new Random();
     public static final int mod = 1_000_000_007;
