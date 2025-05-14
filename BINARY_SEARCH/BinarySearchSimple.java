@@ -1,4 +1,4 @@
-package BINARY_SEARCH_ON_ANSWER;
+package BINARY_SEARCH;
 import java.util.*;
 public class BinarySearchSimple {
     public static void main(String[] args) {

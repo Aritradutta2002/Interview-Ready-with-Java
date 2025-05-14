@@ -11,16 +11,16 @@ public class LowestCommonAncestor_Leetcode236 {
         // Test Case 1
         System.out.println("Test Case 1:");
         TreeNode root1 = buildTreeExample1();
-        TreeNode p1 = root1.left; // Node with value 5
-        TreeNode q1 = root1.right; // Node with value 1
+        TreeNode p1 = root1.left;
+        TreeNode q1 = root1.right;
         TreeNode result1 = lowestCommonAncestor(root1, p1, q1);
         System.out.println("LCA of nodes 5 and 1 is: " + result1.val);
         
         // Test Case 2
         System.out.println("\nTest Case 2:");
-        TreeNode root2 = buildTreeExample1(); // Same tree as example 1
-        TreeNode p2 = root2.left; // Node with value 5
-        TreeNode q2 = root2.left.right.right; // Node with value 4
+        TreeNode root2 = buildTreeExample1();
+        TreeNode p2 = root2.left;
+        TreeNode q2 = root2.left.right.right;
         TreeNode result2 = lowestCommonAncestor(root2, p2, q2);
         System.out.println("LCA of nodes 5 and 4 is: " + result2.val);
         
@@ -28,8 +28,8 @@ public class LowestCommonAncestor_Leetcode236 {
         System.out.println("\nTest Case 3:");
         TreeNode root3 = new TreeNode(1);
         root3.left = new TreeNode(2);
-        TreeNode p3 = root3; // Node with value 1
-        TreeNode q3 = root3.left; // Node with value 2
+        TreeNode p3 = root3;
+        TreeNode q3 = root3.left;
         TreeNode result3 = lowestCommonAncestor(root3, p3, q3);
         System.out.println("LCA of nodes 1 and 2 is: " + result3.val);
     }
