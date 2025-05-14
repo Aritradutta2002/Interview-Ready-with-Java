@@ -1,10 +1,9 @@
 package ARRAYS;
-
-
 /*
- *   Author  : Aritra Dutta
- *   Created : Monday, 09.09.2024  12:21 am
+ *   Author: Aritra Dutta
+ *   Created: Monday, 09.09.2024 12:21 am
  */
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;

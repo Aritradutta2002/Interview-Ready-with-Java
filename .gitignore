@@ -1,0 +1,8 @@
+# IntelliJ IDEA files
+.idea/
+
+# IntelliJ IDEA module file
+Interview-Ready-with-Java.iml
+
+# Build output directories
+out/
