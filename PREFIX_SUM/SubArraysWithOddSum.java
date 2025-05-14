@@ -1,8 +1,8 @@
 package PREFIX_SUM;
 import java.util.*;
 /*
-*   Author  : Aritra Dutta
-*   Created : Tuesday, 25.02.2025  11:25 pm
+*   Author: Aritra Dutta
+*   Created: Tuesday, 25.02.2025 11:25 pm
 */
 public class SubArraysWithOddSum {
     public static void main(String[] args){

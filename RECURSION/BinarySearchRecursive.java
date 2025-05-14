@@ -4,8 +4,6 @@ public class BinarySearchRecursive {
 
     static int BinarySearch(int [] arr, int target, int low, int high){
 
-
-
         if(low > high){
             return -1;
         }
