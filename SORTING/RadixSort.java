@@ -1,16 +1,16 @@
 package SORTING;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.InputMismatchException;
-
 import static java.lang.Double.parseDouble;
 import static java.lang.System.in;
 import static java.lang.System.out;
+
 /*
  *   Author : Aritra
  *   Created On: Thursday,15.05.2025 10:58 pm
  */
-
 public class RadixSort {
     public static void main(String[] args) {
         FastIO io = new FastIO();
@@ -19,7 +19,6 @@ public class RadixSort {
         arr = radixSort(arr);
         out.println(Arrays.toString(arr));
     }
-
     /*
      * 1. Get the maximum element from the array
      * 2. Do counting sort for every digit.
