@@ -20,6 +20,7 @@ public class RadixSort {
         arr = radixSort(arr);
         out.println(Arrays.toString(arr));
     }
+
     /*
      * 1. Get the maximum element from the array
      * 2. Do counting sort for every digit.
