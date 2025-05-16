@@ -1,9 +1,16 @@
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */
+
 package STACK_QUEUE.QUEUE;
 
-import java.util.*;
-import java.lang.*;
-import java.math.*;
-import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /*
  *   Author : Aritra
@@ -11,7 +18,13 @@ import java.io.*;
  */
 public class Implement_Stack_using_Queues {
     public static void main(String[] args) {
-
+        MyStack stack = new MyStack();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        System.out.println(stack.pop()); // 3
+        System.out.println(stack.top()); // 2
+        System.out.println(stack.empty()); // false
     }
 
     static class MyStack {
@@ -43,13 +56,5 @@ public class Implement_Stack_using_Queues {
         }
     }
 
-/**
- * Your MyStack object will be instantiated and called as such:
- * MyStack obj = new MyStack();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.top();
- * boolean param_4 = obj.empty();
- */
 
 }
