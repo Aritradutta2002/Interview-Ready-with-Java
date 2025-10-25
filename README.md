@@ -9,7 +9,7 @@
 ![Maven](https://img.shields.io/badge/Maven-Build-red?style=for-the-badge&logo=apache-maven)
 ![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen?style=for-the-badge)
 
-*A curated collection of **80+** Data Structures & Algorithms problems with solutions for FAANG/MAANG interviews*
+*A curated collection of **150+** Data Structures & Algorithms problems with solutions for FAANG/MAANG interviews*
 
 [📚 Explore Problems](#-problem-categories) • [🎯 Getting Started](#-getting-started) • [💡 Contributing](#-contributing)
 
@@ -30,10 +30,10 @@ This repository is your **complete interview preparation companion** featuring h
 ## 📊 Repository Stats
 
 ```
-📁 Total Problems: 80+
-🟢 Easy: 25+
-🟡 Medium: 40+
-🔴 Hard: 15+
+📁 Total Problems: 150+
+🟢 Easy: 40+
+🟡 Medium: 80+
+🔴 Hard: 30+
 ⭐ Companies: Amazon, Google, Microsoft, Meta, Apple
 ```
 
@@ -45,24 +45,24 @@ This repository is your **complete interview preparation companion** featuring h
 <tr>
 <td width="50%">
 
-### 🔥 Core Data Structures (60+ Problems)
+### 🔥 Core Data Structures (130+ Problems)
 
 | Category | Problems | Status |
 |----------|----------|--------|
 | 📊 **[ARRAYS](ARRAYS/)** | 6 | ✅ |
 | 🔍 **[BINARY_SEARCH](BINARY_SEARCH/)** | 21 | ✅ |
 | 🌳 **[BINARY_SEARCH_TREES](BINARY_SEARCH_TREES/)** | 9 | ✅ |
-| 🌲 **[BINARY_TREES](BINARY_TREES/)** | - | 🚧 |
+| 🌲 **[BINARY_TREES](BINARY_TREES/)** | 53 | ✅ |
 | 🔗 **[LINKEDLISTS](LINKEDLISTS/)** | 7 | ✅ |
 | 📚 **[STACK_QUEUE](STACK_QUEUE/)** | - | 🚧 |
 | 🔤 **[STRINGS](STRINGS/)** | 9 | ✅ |
-| #️⃣ **[HASHING](HASHING/)** | - | 🚧 |
-| 🗺️ **[HASHMAPS](HASHMAPS/)** | - | 🚧 |
+| #️⃣ **[HASHING](HASHING/)** | 1 | ✅ |
+| 🗺️ **[HASHMAPS](HASHMAPS/)** | 11 | ✅ |
 
 </td>
 <td width="50%">
 
-### 🎯 Advanced Techniques (20+ Problems)
+### 🎯 Advanced Techniques (45+ Problems)
 
 | Category | Problems | Status |
 |----------|----------|--------|
@@ -70,11 +70,11 @@ This repository is your **complete interview preparation companion** featuring h
 | 🔙 **[BACKTRACKING](BACKTRACKING/)** | 4 | ✅ |
 | 💎 **[DYNAMIC_PROGRAMMING](DYNAMIC_PROGRAMMING/)** | 7 | ✅ |
 | 🌐 **[GRAPHS](GRAPHS/)** | - | 🚧 |
-| ➕ **[PREFIX_SUM](PREFIX_SUM/)** | - | 🚧 |
-| ↔️ **[TWO_POINTER](TWO_POINTER/)** | - | 🚧 |
-| 🔢 **[MATHEMATICS](MATHEMATICS/)** | - | 🚧 |
-| 🔎 **[SEARCHING](SEARCHING/)** | - | 🚧 |
-| 📶 **[SORTING](SORTING/)** | - | 🚧 |
+| ➕ **[PREFIX_SUM](PREFIX_SUM/)** | 1 | ✅ |
+| ↔️ **[TWO_POINTER](TWO_POINTER/)** | 2 | ✅ |
+| 🔢 **[MATHEMATICS](MATHEMATICS/)** | 13 | ✅ |
+| 🔎 **[SEARCHING](SEARCHING/)** | 1 | ✅ |
+| 📶 **[SORTING](SORTING/)** | 7 | ✅ |
 
 </td>
 </tr>
