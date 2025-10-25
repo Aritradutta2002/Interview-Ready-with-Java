@@ -35,7 +35,7 @@ public class Permutation {
 
             backtrack(resultList, tempList, nums);
 
-            tempList.removeLast();
+            tempList.remove(tempList.size() - 1);
         }
     }
 }

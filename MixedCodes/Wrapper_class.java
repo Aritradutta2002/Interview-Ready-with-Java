@@ -3,7 +3,7 @@ package AllMixedCodes;
 public class Wrapper_class{
     public static void main(String[] args){
         int num =7;
-        Integer num1 = new Integer(8);
+        Integer num1 = Integer.valueOf(8);
         Integer num2 = 10;
         System.out.println(num2);
         System.out.println(num1);

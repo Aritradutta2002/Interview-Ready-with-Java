@@ -68,7 +68,7 @@ public class Permutations_Leetcode46 {
                 permutation.add(nums[i]);
                 visited.add(nums[i]);
                 helper(nums, permutation, res, visited, currentIndex);
-                permutation.removeLast();
+                permutation.remove(permutation.size() - 1);
                 visited.remove(nums[i]);
             }
         }
