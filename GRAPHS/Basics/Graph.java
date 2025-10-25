@@ -33,7 +33,8 @@ public class Graph {
     // Adjacency representations
     public final List<List<Integer>> adj;      // Unweighted: [vertex] -> [neighbors]
     public final List<List<int[]>> adjW;       // Weighted: [vertex] -> [[neighbor, weight]]
-    
+    public int n;
+
     /**
      * Creates a new graph with specified properties
      * 

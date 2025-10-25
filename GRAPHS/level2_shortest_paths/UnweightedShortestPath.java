@@ -1,5 +1,4 @@
 package GRAPHS.level2_shortest_paths;
-
 import GRAPHS.Basics.Graph;
 
 import java.util.ArrayDeque;
