@@ -9,7 +9,7 @@
 ![Maven](https://img.shields.io/badge/Maven-Build-red?style=for-the-badge&logo=apache-maven)
 ![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen?style=for-the-badge)
 
-*A curated collection of **150+** Data Structures & Algorithms problems with solutions for FAANG/MAANG interviews*
+*A curated collection of **230+** Data Structures & Algorithms problems with solutions for FAANG/MAANG interviews*
 
 [📚 Explore Problems](#-problem-categories) • [🎯 Getting Started](#-getting-started) • [💡 Contributing](#-contributing)
 
@@ -30,10 +30,10 @@ This repository is your **complete interview preparation companion** featuring h
 ## 📊 Repository Stats
 
 ```
-📁 Total Problems: 150+
-🟢 Easy: 40+
-🟡 Medium: 80+
-🔴 Hard: 30+
+📁 Total Problems: 230+
+🟢 Easy: 60+
+🟡 Medium: 120+
+🔴 Hard: 50+
 ⭐ Companies: Amazon, Google, Microsoft, Meta, Apple
 ```
 
@@ -62,14 +62,14 @@ This repository is your **complete interview preparation companion** featuring h
 </td>
 <td width="50%">
 
-### 🎯 Advanced Techniques (45+ Problems)
+### 🎯 Advanced Techniques (130+ Problems)
 
 | Category | Problems | Status |
 |----------|----------|--------|
 | 🔄 **[RECURSION](RECURSION/)** | 13 | ✅ |
 | 🔙 **[BACKTRACKING](BACKTRACKING/)** | 4 | ✅ |
 | 💎 **[DYNAMIC_PROGRAMMING](DYNAMIC_PROGRAMMING/)** | 7 | ✅ |
-| 🌐 **[GRAPHS](GRAPHS/)** | - | 🚧 |
+| 🌐 **[GRAPHS](GRAPHS/)** | 84 | ✅ |
 | ➕ **[PREFIX_SUM](PREFIX_SUM/)** | 1 | ✅ |
 | ↔️ **[TWO_POINTER](TWO_POINTER/)** | 2 | ✅ |
 | 🔢 **[MATHEMATICS](MATHEMATICS/)** | 13 | ✅ |
