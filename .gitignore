@@ -1,5 +1,6 @@
 # IntelliJ IDEA files
 .idea/
+.mvn/
 *.iml
 
 # Build output directories
