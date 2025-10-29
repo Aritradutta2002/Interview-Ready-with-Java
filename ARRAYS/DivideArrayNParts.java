@@ -3,7 +3,6 @@ package ARRAYS;
  *   Author: Aritra Dutta
  *   Created: Monday, 09.09.2024 12:21 am
  */
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
@@ -19,9 +18,7 @@ public class DivideArrayNParts {
         int [] arr = fs.nextInts(n);
         int k = fs.nextInt();
         int[][] result = divideNParts(arr, k);
-       for(int [] res : result) {
-           print(res);
-       }
+        print(result);
         out.close();
     }
     static int[][] divideNParts(int[] nums, int k) {
@@ -47,90 +44,10 @@ public class DivideArrayNParts {
         return parts;
     }
 
-    static final Random random = new Random();
-    static final int mod = 1_000_000_007;
-
-    public static boolean isPrime(long n) {
-        if(n < 2) return false;
-        if(n == 2 || n == 3) return true;
-        if(n%2 == 0 || n%3 == 0) return false;
-        long sqrtN = (long)Math.sqrt(n)+1;
-        for(long i = 6L; i <= sqrtN; i += 6) {
-            if(n%(i-1) == 0 || n%(i+1) == 0) return false;
+    static void print(int[][] arr) {
+        for(int[] row : arr) {
+            System.out.println(Arrays.toString(row));
         }
-        return true;
-    }
-
-    static void ruffleSort(int[] a) {
-        int n = a.length;// shuffle, then sort
-        for (int i = 0; i < n; i++) {
-            int oi = random.nextInt(n), temp = a[oi];
-            a[oi] = a[i];
-            a[i] = temp;
-        }
-        Arrays.sort(a);
-    }
-
-    public static long gcd(long a, long b) {
-        while (b != 0) {
-            long temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
-
-    public static void print(int[] arr) {
-        //for debugging only
-        for (int x : arr)
-            out.print(x + " ");
-        out.println();
-    }
-
-    public static long add(long a, long b) {
-        return (a + b) % mod;
-    }
-
-    public static long sub(long a, long b) {
-        return ((a - b) % mod + mod) % mod;
-    }
-
-    static long mul(long a, long b) {
-        return (a * b) % mod;
-    }
-
-    public static long exp(long base, long exp) {
-        if (exp == 0)
-            return 1;
-        long half = exp(base, exp / 2);
-        if (exp % 2 == 0)
-            return mul(half, half);
-        return mul(half, mul(half, base));
-    }
-
-    static long[] factorials = new long[2_000_001];
-    static long[] invFactorials = new long[2_000_001];
-
-    public static void precompFacts() {
-        factorials[0] = invFactorials[0] = 1;
-        for (int i = 1; i < factorials.length; i++)
-            factorials[i] = mul(factorials[i - 1], i);
-        invFactorials[factorials.length - 1] = exp(factorials[factorials.length - 1], mod - 2);
-        for (int i = invFactorials.length - 2; i >= 0; i--)
-            invFactorials[i] = mul(invFactorials[i + 1], i + 1);
-    }
-
-    public static long nCk(int n, int k) {
-        return mul(factorials[n], mul(invFactorials[k], invFactorials[n - k]));
-    }
-
-    public static void sort(int[] a) {
-        ArrayList<Integer> l = new ArrayList<>();
-        for (int i : a)
-            l.add(i);
-        Collections.sort(l);
-        for (int i = 0; i < a.length; i++)
-            a[i] = l.get(i);
     }
 
     public static class FastScanner {

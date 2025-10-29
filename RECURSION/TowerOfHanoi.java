@@ -1,394 +1,400 @@
 package RECURSION;
-/*
-*   Author  : Aritra Dutta
-*   Created : Sunday, 02.03.2025  12:18 am
-*/
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.abs;
-import static java.lang.System.out;
-import java.io.*;
-import java.util.*;
+
+/**
+ * Tower of Hanoi problem solver using recursion.
+ *
+ * The Tower of Hanoi is a classic problem where we have three rods and n disks of different sizes
+ * which can slide onto any rod. The puzzle starts with the disks in a neat stack in ascending order
+ * of size on one rod, the smallest at the top, thus making a conical shape.
+ *
+ * The objective is to move the entire stack to another rod, obeying the following rules:
+ * 1. Only one disk can be moved at a time.
+ * 2. Each move consists of taking the upper disk from one of the stacks and placing it on top of another stack.
+ * 3. No disk may be placed on top of a smaller disk.
+ *
+ * This implementation uses recursion to solve the problem and records all moves.
+ *
+ * @author Aritra Dutta
+ * @created Sunday, 02.03.2025 12:18 am
+ */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class TowerOfHanoi {
-    public static final Random random = new Random();
-    public static final int mod = 1_000_000_007;
-    
-    public static void main(String[] args) throws Exception{
-        FastScanner fs = new FastScanner();
-        PrintWriter out = new PrintWriter(System.out);
-        int n = fs.nextInt();
-        towerOfHanoi(n, 1, 2, 3);
-        System.out.println(moves.size());
-        for(var ele : moves) {
-            System.out.println(ele);
-        }
-        out.close();
-    }
-    public static List<String> moves = new ArrayList<>();
-    public static void towerOfHanoi(int n, int source, int helper, int destination) {
+
+    // List to store the sequence of moves
+    private static final List<String> moves = new ArrayList<>();
+
+    /**
+     * Recursive function to solve Tower of Hanoi.
+     *
+     * @param n         Number of disks
+     * @param from      Source rod
+     * @param auxiliary Auxiliary rod
+     * @param to        Destination rod
+     */
+    public static void towerOfHanoi(int n, int from, int auxiliary, int to) {
         if (n == 1) {
-            moves.add(source + " " + destination);
+            moves.add(from + " " + to);
             return;
         }
-        /* Move top (n - 1) disks from source to helper using destination */
-        towerOfHanoi(n - 1, source, destination, helper);
 
-        /* Move remaining disk from source to destination */
-        moves.add(source + " " + destination);
+        // Move n-1 disks from source to auxiliary using destination as helper
+        towerOfHanoi(n - 1, from, to, auxiliary);
 
-        /* Move (n-1) disks from helper to destination using source */
-        towerOfHanoi(n - 1, helper, source, destination);
+        // Move the nth disk from source to destination
+        moves.add(from + " " + to);
+
+        // Move n-1 disks from auxiliary to destination using source as helper
+        towerOfHanoi(n - 1, auxiliary, from, to);
     }
 
-/*=================================================================================================================================================
-================================================================================================================================================= */
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of disks: ");
+        int n = scanner.nextInt();
+        scanner.close();
 
+        // Solve Tower of Hanoi with rods labeled 1, 2, 3
+        towerOfHanoi(n, 1, 2, 3);
 
-    /* ============================= Graph Algorithms =================================== */
+        // Output the results
+        System.out.println("Total moves: " + moves.size());
+        System.out.println("Moves:");
+        for (String move : moves) {
+            System.out.println(move);
+        }
+    }
 
+    // Additional classic recursion problems
 
+    /**
+     * Calculates the factorial of a number using recursion.
+     * Factorial of n (n!) = n * (n-1) * ... * 1
+     *
+     * @param n the number to calculate factorial for
+     * @return factorial of n
+     */
+    public static long factorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+        return n * factorial(n - 1);
+    }
 
-    /* ----------- BFS (Recursive) -------------- */
+    /**
+     * Calculates the nth Fibonacci number using recursion.
+     * Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8, ...
+     *
+     * @param n the position in Fibonacci sequence
+     * @return nth Fibonacci number
+     */
+    public static int fibonacci(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
 
-    static void bfsRecursive(int start, List<List<Integer>> adj) {
-        Queue<Integer> q = new ArrayDeque<>();
-        boolean[] visited = new boolean[adj.size()];
+    /**
+     * Calculates the sum of digits of a number using recursion.
+     *
+     * @param n the number
+     * @return sum of digits
+     */
+    public static int sumOfDigits(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        return (n % 10) + sumOfDigits(n / 10);
+    }
 
-        q.add(start);
-        visited[start] = true;
+    /**
+     * Reverses a number using recursion.
+     *
+     * @param n the number to reverse
+     * @return reversed number
+     */
+    public static int reverseNumber(int n) {
+        return reverseHelper(n, 0);
+    }
 
-        while (!q.isEmpty()) {
-            int u = q.poll();
-            out.print(u + " "); // Process node u
+    private static int reverseHelper(int n, int reversed) {
+        if (n == 0) {
+            return reversed;
+        }
+        return reverseHelper(n / 10, reversed * 10 + n % 10);
+    }
 
-            for (int v : adj.get(u)) {
-                if (!visited[v]) {
-                    visited[v] = true;
-                    q.add(v);
+    /**
+     * Performs binary search on a sorted array using recursion.
+     *
+     * @param arr the sorted array
+     * @param target the element to search for
+     * @param low the low index
+     * @param high the high index
+     * @return index of target if found, -1 otherwise
+     */
+    public static int binarySearch(int[] arr, int target, int low, int high) {
+        if (low > high) {
+            return -1;
+        }
+        int mid = low + (high - low) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] > target) {
+            return binarySearch(arr, target, low, mid - 1);
+        } else {
+            return binarySearch(arr, target, mid + 1, high);
+        }
+    }
+
+    /**
+     * Generates all permutations of a string using recursion.
+     *
+     * @param str the input string
+     * @param l the starting index
+     * @param r the ending index
+     */
+    public static void permute(String str, int l, int r) {
+        if (l == r) {
+            System.out.println(str);
+        } else {
+            for (int i = l; i <= r; i++) {
+                str = swap(str, l, i);
+                permute(str, l + 1, r);
+                str = swap(str, l, i); // backtrack
+            }
+        }
+    }
+
+    private static String swap(String str, int i, int j) {
+        char[] charArray = str.toCharArray();
+        char temp = charArray[i];
+        charArray[i] = charArray[j];
+        charArray[j] = temp;
+        return String.valueOf(charArray);
+    }
+
+    /**
+     * Generates all subsets of a set using recursion.
+     *
+     * @param set the input set
+     * @param index the current index
+     * @param current the current subset
+     */
+    public static void generateSubsets(int[] set, int index, List<Integer> current) {
+        if (index == set.length) {
+            System.out.println(current);
+            return;
+        }
+        // Include the current element
+        current.add(set[index]);
+        generateSubsets(set, index + 1, current);
+        // Exclude the current element (backtrack)
+        current.remove(current.size() - 1);
+        generateSubsets(set, index + 1, current);
+    }
+
+    // More advanced recursion problems
+
+    /**
+     * Solves the N-Queens problem using backtracking recursion.
+     * Places N queens on an N x N chessboard so that no two queens attack each other.
+     *
+     * @param n the number of queens and board size
+     */
+    public static void solveNQueens(int n) {
+        int[][] board = new int[n][n];
+        if (solveNQueensUtil(board, 0, n)) {
+            printBoard(board);
+        } else {
+            System.out.println("Solution does not exist");
+        }
+    }
+
+    private static boolean solveNQueensUtil(int[][] board, int col, int n) {
+        if (col >= n) {
+            return true;
+        }
+        for (int i = 0; i < n; i++) {
+            if (isSafe(board, i, col, n)) {
+                board[i][col] = 1;
+                if (solveNQueensUtil(board, col + 1, n)) {
+                    return true;
                 }
+                board[i][col] = 0; // backtrack
             }
         }
+        return false;
     }
 
-    /* ------ Optimized BFS ------ */
-
-    static void bfsOptimized(int start, List<List<Integer>> adj) {
-        ArrayDeque<Integer> q = new ArrayDeque<>();
-        BitSet visited = new BitSet(adj.size());
-        q.add(start);
-        visited.set(start);
-
-        while (!q.isEmpty()) {
-            int u = q.poll();
-            // Process node u here (if needed)
-
-            for (int v : adj.get(u)) {
-                if (!visited.get(v)) {
-                    visited.set(v);
-                    q.add(v);
-                }
+    private static boolean isSafe(int[][] board, int row, int col, int n) {
+        // Check row on left side
+        for (int i = 0; i < col; i++) {
+            if (board[row][i] == 1) {
+                return false;
             }
         }
-    }
-
-    /* ----- DFS (Recursive) ------- */
-
-    static void dfsRecursive(int u, List<List<Integer>> adj, boolean[] visited) {
-        visited[u] = true;
-        out.print(u + " "); // Process node u
-
-        for (int v : adj.get(u)) {
-            if (!visited[v]) {
-                dfsRecursive(v, adj, visited);
+        // Check upper diagonal on left side
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 1) {
+                return false;
             }
         }
-    }
-
-    /* --------- Optimized DFS (Iterative) no recursion overhead -------*/
-
-    static void dfsOptimized(int start, List<List<Integer>> adj) {
-        ArrayDeque<Integer> stack = new ArrayDeque<>();
-        BitSet visited = new BitSet(adj.size());
-        stack.push(start);
-        visited.set(start);
-
-        while (!stack.isEmpty()) {
-            int u = stack.pop();
-            // Process node u here (if needed)
-
-            for (int v : adj.get(u)) {
-                if (!visited.get(v)) {
-                    visited.set(v);
-                    stack.push(v);
-                }
+        // Check lower diagonal on left side
+        for (int i = row, j = col; j >= 0 && i < n; i++, j--) {
+            if (board[i][j] == 1) {
+                return false;
             }
-        }
-    }
-
-    /* -------- Graph Input Helper ----------- */
-
-    static List<Integer>[] createGraph(int nodes, int edges, FastScanner fs) {
-        List<Integer>[] adj = new ArrayList[nodes];
-        for (int i = 0; i < nodes; i++) adj[i] = new ArrayList<>();
-        for (int i = 0; i < edges; i++) {
-            int u = fs.nextInt() - 1, v = fs.nextInt() - 1;
-            adj[u].add(v);
-            adj[v].add(u); // Remove if directed graph
-        }
-        return adj;
-    }
-
-    /*------ Dijkstra's Algorithm -----*/
-
-    static int[] dijkstra(int src, List<int[]>[] adj) {
-        int n = adj.length;
-        int[] dist = new int[n];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        dist[src] = 0;
-
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
-        pq.add(new int[]{src, 0});
-
-        while (!pq.isEmpty()) {
-            int[] node = pq.poll();
-            int u = node[0], d = node[1];
-            if (d > dist[u]) continue;
-
-            for (int[] edge : adj[u]) {
-                int v = edge[0], weight = edge[1];
-                if (dist[u] + weight < dist[v]) {
-                    dist[v] = dist[u] + weight;
-                    pq.add(new int[]{v, dist[v]});
-                }
-            }
-        }
-        return dist;
-    }
-
-    /* ============================== Math Utilities ======================================= */
-
-    public static boolean isPrime(long n) {
-        if(n < 2) return false;
-        if(n == 2 || n == 3) return true;
-        if(n%2 == 0 || n%3 == 0) return false;
-        long sqrtN = (long)Math.sqrt(n)+1;
-        for(long i = 6L; i <= sqrtN; i += 6) {
-            if(n%(i-1) == 0 || n%(i+1) == 0) return false;
         }
         return true;
     }
 
-    /* ------ Modular Exponentiation (x^y % mod) ------- */
-
-    static long modPow(long x, long y, long mod) {
-        long res = 1;
-        while (y > 0) {
-            if ((y & 1) == 1) res = (res * x) % mod;
-            x = (x * x) % mod;
-            y >>= 1;
+    private static void printBoard(int[][] board) {
+        for (int[] row : board) {
+            for (int cell : row) {
+                System.out.print(cell + " ");
+            }
+            System.out.println();
         }
-        return res;
     }
 
-
-    static void ruffleSort(int[] a) {
-        int n = a.length;// shuffle, then sort
-        for (int i = 0; i < n; i++) {
-            int oi = random.nextInt(n), temp = a[oi];
-            a[oi] = a[i];
-            a[i] = temp;
-        }
-        Arrays.sort(a);
-    }
-
-    public static long gcd(long a, long b) {
-        while (b != 0) {
-            long temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
-
-    public static void print(int[] arr) {
-        //for debugging only
-        for (int x : arr)
-            out.print(x + " ");
-        out.println();
-    }
-
-    public static long add(long a, long b) {
-        return (a + b) % mod;
-    }
-
-    public static long sub(long a, long b) {
-        return ((a - b) % mod + mod) % mod;
-    }
-
-    static long mul(long a, long b) {
-        return (a * b) % mod;
-    }
-    static long calPow(long base, long exponent) {
-        if (exponent == 0) {
-            return 1;
-        }
-        if (exponent == 1) {
-            return base % mod;
-        }
-        long temp = calPow(base, exponent / 2);
-
-        if (exponent % 2 == 0) {
-            return (temp * temp) % mod;
+    /**
+     * Solves the Rat in a Maze problem using backtracking recursion.
+     * Finds a path from (0,0) to (n-1,n-1) in a maze where 1 is path and 0 is wall.
+     *
+     * @param maze the maze grid
+     * @param n the size of the maze
+     */
+    public static void solveRatInMaze(int[][] maze, int n) {
+        int[][] solution = new int[n][n];
+        if (solveRatInMazeUtil(maze, 0, 0, solution, n)) {
+            printBoard(solution);
         } else {
-            return (((temp * temp) % mod) * base) % mod;
+            System.out.println("Solution does not exist");
         }
     }
 
-
-    public static long exp(long base, long exp) {
-        if (exp == 0)
-            return 1;
-        long half = exp(base, exp / 2);
-        if (exp % 2 == 0)
-            return mul(half, half);
-        return mul(half, mul(half, base));
-    }
-
-    static long[] factorials = new long[2_000_001];
-    static long[] invFactorials = new long[2_000_001];
-
-    public static void precompFacts() {
-        factorials[0] = invFactorials[0] = 1;
-        for (int i = 1; i < factorials.length; i++)
-            factorials[i] = mul(factorials[i - 1], i);
-        invFactorials[factorials.length - 1] = exp(factorials[factorials.length - 1], mod - 2);
-        for (int i = invFactorials.length - 2; i >= 0; i--)
-            invFactorials[i] = mul(invFactorials[i + 1], i + 1);
-    }
-
-    public static long nCk(int n, int k) {
-        return mul(factorials[n], mul(invFactorials[k], invFactorials[n - k]));
-    }
-
-    public static void sort(int[] a) {
-        ArrayList<Integer> l = new ArrayList<>();
-        for (int i : a)
-            l.add(i);
-        Collections.sort(l);
-        for (int i = 0; i < a.length; i++)
-            a[i] = l.get(i);
-    }
-
-    public static class FastScanner {
-        private int BS = 1 << 16;
-        private char NC = (char) 0;
-        private byte[] buf = new byte[BS];
-        private int bId = 0, size = 0;
-        private char c = NC;
-        private double cnt = 1;
-        private BufferedInputStream in;
-
-        public FastScanner() {
-            in = new BufferedInputStream(System.in, BS);
+    private static boolean solveRatInMazeUtil(int[][] maze, int x, int y, int[][] solution, int n) {
+        if (x == n - 1 && y == n - 1 && maze[x][y] == 1) {
+            solution[x][y] = 1;
+            return true;
         }
-
-        public FastScanner(String s) {
-            try {
-                in = new BufferedInputStream(new FileInputStream(new File(s)), BS);
-            } catch (Exception e) {
-                in = new BufferedInputStream(System.in, BS);
+        if (isSafeMaze(maze, x, y, n)) {
+            solution[x][y] = 1;
+            // Move right
+            if (solveRatInMazeUtil(maze, x, y + 1, solution, n)) {
+                return true;
             }
+            // Move down
+            if (solveRatInMazeUtil(maze, x + 1, y, solution, n)) {
+                return true;
+            }
+            // Backtrack
+            solution[x][y] = 0;
+            return false;
         }
+        return false;
+    }
 
-        private char getChar() {
-            while (bId == size) {
-                try {
-                    size = in.read(buf);
-                } catch (Exception e) {
-                    return NC;
+    private static boolean isSafeMaze(int[][] maze, int x, int y, int n) {
+        return (x >= 0 && x < n && y >= 0 && y < n && maze[x][y] == 1);
+    }
+
+    /**
+     * Solves the Subset Sum problem using recursion.
+     * Determines if there is a subset of the given set with sum equal to given sum.
+     *
+     * @param set the input set
+     * @param n the size of set
+     * @param sum the target sum
+     * @return true if subset with given sum exists
+     */
+    public static boolean subsetSum(int[] set, int n, int sum) {
+        if (sum == 0) {
+            return true;
+        }
+        if (n == 0) {
+            return false;
+        }
+        if (set[n - 1] > sum) {
+            return subsetSum(set, n - 1, sum);
+        }
+        return subsetSum(set, n - 1, sum) || subsetSum(set, n - 1, sum - set[n - 1]);
+    }
+
+    /**
+     * Calculates the Greatest Common Divisor (GCD) using recursive Euclidean algorithm.
+     *
+     * @param a first number
+     * @param b second number
+     * @return GCD of a and b
+     */
+    public static int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        return gcd(b, a % b);
+    }
+
+    /**
+     * Solves Sudoku using backtracking recursion.
+     * Fills the board with digits 1-9 such that each row, column, and 3x3 subgrid contains each digit exactly once.
+     *
+     * @param board the 9x9 Sudoku board
+     * @return true if solvable
+     */
+    public static boolean solveSudoku(char[][] board) {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (board[row][col] == '.') {
+                    for (char num = '1'; num <= '9'; num++) {
+                        if (isValidSudoku(board, row, col, num)) {
+                            board[row][col] = num;
+                            if (solveSudoku(board)) {
+                                return true;
+                            }
+                            board[row][col] = '.'; // backtrack
+                        }
+                    }
+                    return false;
                 }
-                if (size == -1) return NC;
-                bId = 0;
             }
-            return (char) buf[bId++];
         }
+        return true;
+    }
 
-        public int nextInt() {
-            return (int) nextLong();
-        }
-
-        public int[] nextInts(int N) {
-            int[] res = new int[N];
-            for (int i = 0; i < N; i++) {
-                res[i] = (int) nextLong();
+    private static boolean isValidSudoku(char[][] board, int row, int col, char num) {
+        for (int i = 0; i < 9; i++) {
+            if (board[row][i] == num || board[i][col] == num) {
+                return false;
             }
-            return res;
         }
-
-        public long[] nextLongs(int N) {
-            long[] res = new long[N];
-            for (int i = 0; i < N; i++) {
-                res[i] = nextLong();
+        int startRow = row - row % 3;
+        int startCol = col - col % 3;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[startRow + i][startCol + j] == num) {
+                    return false;
+                }
             }
-            return res;
         }
+        return true;
+    }
 
-        public long nextLong() {
-            cnt = 1;
-            boolean neg = false;
-            if (c == NC) c = getChar();
-            for (; (c < '0' || c > '9'); c = getChar()) {
-                if (c == '-') neg = true;
+    /**
+     * Prints the Sudoku board.
+     *
+     * @param board the 9x9 board
+     */
+    public static void printSudokuBoard(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                System.out.print(board[i][j] + " ");
             }
-            long res = 0;
-            for (; c >= '0' && c <= '9'; c = getChar()) {
-                res = (res << 3) + (res << 1) + c - '0';
-                cnt *= 10;
-            }
-            return neg ? -res : res;
-        }
-
-        public double nextDouble() {
-            double cur = nextLong();
-            return c != '.' ? cur : cur + nextLong() / cnt;
-        }
-
-        public double[] nextDoubles(int N) {
-            double[] res = new double[N];
-            for (int i = 0; i < N; i++) {
-                res[i] = nextDouble();
-            }
-            return res;
-        }
-
-        public String next() {
-            StringBuilder res = new StringBuilder();
-            while (c <= 32) c = getChar();
-            while (c > 32) {
-                res.append(c);
-                c = getChar();
-            }
-            return res.toString();
-        }
-
-        public String nextLine() {
-            StringBuilder res = new StringBuilder();
-            while (c <= 32) c = getChar();
-            while (c != '\n') {
-                res.append(c);
-                c = getChar();
-            }
-            return res.toString();
-        }
-
-        public boolean hasNext() {
-            if (c > 32) return true;
-            while (true) {
-                c = getChar();
-                if (c == NC) return false;
-                else if (c > 32) return true;
-            }
+            System.out.println();
         }
     }
 }
