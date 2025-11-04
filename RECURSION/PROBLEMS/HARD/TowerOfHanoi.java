@@ -1,4 +1,4 @@
-package RECURSION;
+package RECURSION.PROBLEMS.HARD;
 
 /**
  * Tower of Hanoi problem solver using recursion.

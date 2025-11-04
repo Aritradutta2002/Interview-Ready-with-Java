@@ -1,4 +1,4 @@
-package RECURSION;
+package RECURSION.PROBLEMS.MEDIUM;
 import java.util.*;
 @SuppressWarnings("unused")
 

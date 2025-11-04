@@ -1,4 +1,4 @@
-package RECURSION.Permutations;
+package RECURSION.PROBLEMS.MEDIUM.PERMUTATIONS;
 
 import java.util.HashSet;
 import java.util.Set;

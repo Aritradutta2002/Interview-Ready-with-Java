@@ -1,4 +1,4 @@
-package RECURSION;
+package RECURSION.PROBLEMS.HARD;
 import java.util.*;
 @SuppressWarnings("unused")
 

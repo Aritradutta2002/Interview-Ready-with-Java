@@ -1,4 +1,4 @@
-package RECURSION.Permutations;
+package RECURSION.PROBLEMS.MEDIUM.PERMUTATIONS;
 
 /**
  * Collection of permutation problems solved using recursion.

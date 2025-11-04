@@ -1,4 +1,4 @@
-package RECURSION;
+package RECURSION.PROBLEMS.MEDIUM;
 
 public class GCDRecursive {
     static int gcd(int a, int b) {

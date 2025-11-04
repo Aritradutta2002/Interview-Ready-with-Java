@@ -1,4 +1,4 @@
-package RECURSION;
+package RECURSION.PROBLEMS.HARD;
 
 import static java.util.Arrays.sort;
 

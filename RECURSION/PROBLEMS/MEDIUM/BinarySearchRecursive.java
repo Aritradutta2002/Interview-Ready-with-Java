@@ -1,4 +1,4 @@
-package RECURSION;
+package RECURSION.PROBLEMS.MEDIUM;
 
 public class BinarySearchRecursive {
 

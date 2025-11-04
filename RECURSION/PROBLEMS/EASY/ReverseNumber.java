@@ -1,4 +1,4 @@
-package RECURSION;
+package RECURSION.PROBLEMS.EASY;
 
 import java.util.Scanner;
 

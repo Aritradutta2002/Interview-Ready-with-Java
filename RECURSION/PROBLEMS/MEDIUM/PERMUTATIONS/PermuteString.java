@@ -1,4 +1,4 @@
-package RECURSION.Permutations;
+package RECURSION.PROBLEMS.MEDIUM.PERMUTATIONS;
 
 /**
  * Generates all permutations of a string using recursion and backtracking.
