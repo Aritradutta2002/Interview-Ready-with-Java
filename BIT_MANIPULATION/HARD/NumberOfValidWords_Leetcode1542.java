@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.HARD;
 /**
  * LeetCode 1542: Find Longest Awesome Substring
  * Difficulty: Hard

@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.MEDIUM;
 /**
  * LeetCode 89: Gray Code
  * Difficulty: Medium

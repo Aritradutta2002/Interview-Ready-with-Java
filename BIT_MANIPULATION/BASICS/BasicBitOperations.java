@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.BASICS;
 /**
  * Basic Bit Operations - Set, Clear, Toggle, Check
  * 

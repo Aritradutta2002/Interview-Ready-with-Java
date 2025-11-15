@@ -1,3 +1,4 @@
+package GRAPHS.problems.Easy;
 /**
  * LeetCode 997: Find the Town Judge
  * 

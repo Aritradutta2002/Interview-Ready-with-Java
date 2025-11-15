@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.HARD;
 /**
  * LeetCode 1707: Maximum XOR With an Element From Array
  * Difficulty: Hard

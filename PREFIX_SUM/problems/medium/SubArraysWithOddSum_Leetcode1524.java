@@ -1,10 +1,10 @@
-package PREFIX_SUM;
+package PREFIX_SUM.problems.medium;
 import java.util.*;
 /*
 *   Author: Aritra Dutta
 *   Created: Tuesday, 25.02.2025 11:25 pm
 */
-public class SubArraysWithOddSum {
+public class SubArraysWithOddSum_Leetcode1524 {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         int size = sc.nextInt();

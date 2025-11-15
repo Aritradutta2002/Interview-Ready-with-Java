@@ -32,8 +32,8 @@ public class GenericsAdvanced {
         System.out.println("=== BASIC GENERICS ===\n");
         
         // Generic class
-        Box<String> stringBox = new Box<>("Hello Generics");
-        Box<Integer> intBox = new Box<>(42);
+        GenericBox<String> stringBox = new GenericBox<>("Hello Generics");
+        GenericBox<Integer> intBox = new GenericBox<>(42);
         
         System.out.println("String box: " + stringBox.get());
         System.out.println("Integer box: " + intBox.get());
@@ -46,7 +46,7 @@ public class GenericsAdvanced {
         System.out.println("First number: " + getFirst(numbers));
         
         // Multiple type parameters
-        Pair<String, Integer> nameAge = new Pair<>("John", 25);
+        GenericPair<String, Integer> nameAge = new GenericPair<>("John", 25);
         System.out.println("Name-Age pair: " + nameAge);
         
         // Diamond operator (Java 7+)
@@ -133,11 +133,11 @@ public class GenericsAdvanced {
         System.out.println("Double box value: " + doubleBox.getValue());
         
         // Multiple bounds
-        ComparableBox<String> stringBox = new ComparableBox<>("Hello");
         ComparableBox<Integer> intComparableBox = new ComparableBox<>(100);
+        ComparableBox<Double> doubleComparableBox = new ComparableBox<>(3.14);
         
-        System.out.println("String comparison result: " + 
-                          stringBox.compareTo(new ComparableBox<>("World")));
+        System.out.println("Integer comparison result: " + 
+                          intComparableBox.compareTo(new ComparableBox<>(50)));
         
         // Method with bounded type parameter
         Integer[] intArray = {3, 1, 4, 1, 5, 9, 2, 6};
@@ -249,7 +249,7 @@ public class GenericsAdvanced {
         
         // 3. Generic builder pattern
         System.out.println("\n3. GENERIC BUILDER PATTERN:");
-        Person person = new PersonBuilder()
+        GenericPerson person = new GenericPersonBuilder()
                 .name("John Doe")
                 .age(30)
                 .email("john@example.com")
@@ -371,10 +371,10 @@ public class GenericsAdvanced {
 /**
  * Basic generic class
  */
-class Box<T> {
+class GenericBox<T> {
     private T content;
     
-    public Box(T content) {
+    public GenericBox(T content) {
         this.content = content;
     }
     
@@ -390,11 +390,11 @@ class Box<T> {
 /**
  * Generic class with multiple type parameters
  */
-class Pair<T, U> {
+class GenericPair<T, U> {
     private T first;
     private U second;
     
-    public Pair(T first, U second) {
+    public GenericPair(T first, U second) {
         this.first = first;
         this.second = second;
     }
@@ -482,12 +482,12 @@ interface Factory<T> {
 /**
  * Generic builder pattern
  */
-class Person {
+class GenericPerson {
     private String name;
     private int age;
     private String email;
     
-    private Person(String name, int age, String email) {
+    GenericPerson(String name, int age, String email) {
         this.name = name;
         this.age = age;
         this.email = email;
@@ -497,29 +497,29 @@ class Person {
     public String toString() {
         return "Person{name='" + name + "', age=" + age + ", email='" + email + "'}";
     }
+}
+
+class GenericPersonBuilder {
+    private String name;
+    private int age;
+    private String email;
     
-    public static class PersonBuilder {
-        private String name;
-        private int age;
-        private String email;
-        
-        public PersonBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-        
-        public PersonBuilder age(int age) {
-            this.age = age;
-            return this;
-        }
-        
-        public PersonBuilder email(String email) {
-            this.email = email;
-            return this;
-        }
-        
-        public Person build() {
-            return new Person(name, age, email);
-        }
+    public GenericPersonBuilder name(String name) {
+        this.name = name;
+        return this;
+    }
+    
+    public GenericPersonBuilder age(int age) {
+        this.age = age;
+        return this;
+    }
+    
+    public GenericPersonBuilder email(String email) {
+        this.email = email;
+        return this;
+    }
+    
+    public GenericPerson build() {
+        return new GenericPerson(name, age, email);
     }
 }

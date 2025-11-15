@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.EASY;
 /**
  * LeetCode 693: Binary Number with Alternating Bits
  * Difficulty: Easy

@@ -1,3 +1,4 @@
+package STACK_QUEUE.QUEUE;
 /**
  * Your MyStack object will be instantiated and called as such:
  * MyStack obj = new MyStack();

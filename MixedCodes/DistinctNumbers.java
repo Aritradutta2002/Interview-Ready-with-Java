@@ -1,4 +1,4 @@
-package AllMixedCodes;
+package MixedCodes;
 /*
  *   Author  : Aritra Dutta
  *   Created : Saturday, 31.08.2024  02:14 am

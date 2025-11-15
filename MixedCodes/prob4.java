@@ -1,4 +1,4 @@
-package AllMixedCodes;
+package MixedCodes;
 import java.util.*;
 import java.lang.*;
 public class prob4{

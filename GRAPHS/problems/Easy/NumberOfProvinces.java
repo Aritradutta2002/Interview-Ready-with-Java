@@ -1,3 +1,4 @@
+package GRAPHS.problems.Easy;
 /**
  * LeetCode 547: Number of Provinces
  * 

@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.HARD;
 /**
  * Count Subarrays with Given XOR
  * Difficulty: Hard

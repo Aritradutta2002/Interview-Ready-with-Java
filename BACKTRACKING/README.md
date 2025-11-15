@@ -40,9 +40,11 @@ Backtracking is an algorithmic technique that considers searching every possible
 - Remove Invalid Parentheses
 
 ### 4. **GAME_THEORY** (Specialized)
-- Tic-Tac-Toe
-- Word Break II
-- Beautiful Arrangement
+- Tic-Tac-Toe (Minimax + Alpha-Beta)
+- Predict the Winner (Score-Difference DP)
+- Can I Win (Bitmask Backtracking + Memo)
+- Word Break II (DFS Backtracking + Memo)
+- Beautiful Arrangement (Constraint Backtracking)
 
 ## 🎨 Common Patterns
 
@@ -141,6 +143,7 @@ boolean solve(board, row, col) {
 2. **Practice 2-3 problems from each difficulty** - Build confidence
 3. **Time yourself** - Simulate interview conditions
 4. **Focus on explanation** - Practice talking through solutions
+5. **Study GAME_THEORY templates** - Minimax, alpha-beta, bitmask memo; run main() in GAME_THEORY demos
 
 ### For Advanced Learners:
 1. **Study HARD problems** - Advanced techniques
@@ -180,7 +183,12 @@ BACKTRACKING/
 │   ├── WordSearchII_Leetcode212.java # Trie + Backtracking
 │   └── README.md                     # Expert techniques
 └── GAME_THEORY/                     # Specialized applications
-    └── (Future problems with game theory applications)
+    ├── README.md
+    ├── TicTacToe_Minimax.java
+    ├── PredictTheWinner_Leetcode486.java
+    ├── CanIWin_Leetcode464.java
+    ├── WordBreakII_Leetcode140.java
+    └── BeautifulArrangement_Leetcode526.java
 ```
 
 **This backtracking folder is now interview-ready! 🚀**

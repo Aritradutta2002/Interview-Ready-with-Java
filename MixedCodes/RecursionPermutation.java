@@ -1,4 +1,4 @@
-package AllMixedCodes;
+package MixedCodes;
 public class RecursionPermutation {
 
     static String deleteChar(String s, char c){

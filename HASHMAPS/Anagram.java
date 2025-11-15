@@ -1,4 +1,4 @@
-package com.aritra;
+package HASHMAPS;
 import java.sql.SQLOutput;
 import java.util.*;
 import java.lang.*;

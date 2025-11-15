@@ -1,3 +1,4 @@
+package GRAPHS.problems.Easy;
 import java.util.*;
 
 /**

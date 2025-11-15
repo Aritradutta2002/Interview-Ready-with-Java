@@ -1,4 +1,4 @@
-package MEDIUM;
+package BINARY_TREES.TREES_PROBLEM_SET.MEDIUM;
 
 import BINARY_TREES.TREES_PROBLEM_SET.TreeNode;
 import java.util.*;

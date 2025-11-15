@@ -1,3 +1,4 @@
+package GRAPHS.problems.Medium;
 /**
  * LeetCode 684: Redundant Connection
  * 

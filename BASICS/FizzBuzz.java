@@ -1,3 +1,4 @@
+package BASICS;
 /**
  * FizzBuzz - Classic Interview Problem
  * 

@@ -1,4 +1,4 @@
-package AllMixedCodes;
+package MixedCodes;
 import java.util.ArrayList;
 
 public class removeArraylist {

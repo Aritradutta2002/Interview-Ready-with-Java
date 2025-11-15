@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.BASICS;
 /**
  * Power of Two Check - Multiple Approaches
  * 

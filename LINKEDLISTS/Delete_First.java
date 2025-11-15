@@ -1,4 +1,4 @@
-package LINKED_LISTS;
+package LINKEDLISTS;
 
 public class Delete_First {
     static class Node{

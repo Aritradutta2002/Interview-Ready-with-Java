@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.BASICS;
 /**
  * Basic Bitwise Operators in Java
  * 

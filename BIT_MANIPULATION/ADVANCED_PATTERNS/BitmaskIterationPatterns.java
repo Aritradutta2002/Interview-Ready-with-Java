@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.ADVANCED_PATTERNS;
 /**
  * Advanced Bitmask Iteration Patterns
  * Difficulty: Hard

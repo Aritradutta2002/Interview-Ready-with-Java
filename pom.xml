@@ -8,7 +8,7 @@
     <groupId>com.interview</groupId>
     <artifactId>interview-ready-with-java</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>Interview Ready with Java</name>
     <description>Comprehensive Java DSA preparation for FAANG/MAANG interviews</description>
@@ -22,6 +22,29 @@
     </properties>
 
     <dependencies>
+        <!-- Servlet API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- JSP API -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.3.3</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- JSTL -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        
         <!-- JUnit 5 for testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -39,6 +62,8 @@
 
     <build>
         <sourceDirectory>.</sourceDirectory>
+        <directory>${project.basedir}/out</directory>
+        <outputDirectory>${project.build.directory}/production/Interview-Ready-with-Java</outputDirectory>
         <resources>
             <resource>
                 <directory>.</directory>
@@ -69,17 +94,13 @@
                 </configuration>
             </plugin>
 
-            <!-- JAR Plugin -->
+            <!-- WAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                    </archive>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
 

@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.EASY;
 /**
  * LeetCode 268: Missing Number
  * Difficulty: Easy

@@ -1,4 +1,4 @@
-package AllMixedCodes;
+package MixedCodes;
 import java.util.*;
 
 public class BadDays {

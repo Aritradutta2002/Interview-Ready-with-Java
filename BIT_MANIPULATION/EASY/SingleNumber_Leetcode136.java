@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.EASY;
 /**
  * LeetCode 136: Single Number
  * Difficulty: Easy

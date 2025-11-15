@@ -1,3 +1,5 @@
+package BIT_MANIPULATION.THEORY;
+
 /**
  * Bit Manipulation Theory - Core Concepts from PDF Guide
  * 

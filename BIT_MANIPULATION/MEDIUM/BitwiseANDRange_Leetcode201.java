@@ -1,3 +1,5 @@
+package BIT_MANIPULATION.MEDIUM;
+
 /**
  * LeetCode 201: Bitwise AND of Numbers Range
  * Difficulty: Medium

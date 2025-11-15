@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.INTERVIEW_PATTERNS;
 /**
  * XOR Patterns - Essential Interview Techniques
  * 

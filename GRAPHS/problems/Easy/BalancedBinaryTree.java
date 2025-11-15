@@ -1,3 +1,4 @@
+package GRAPHS.problems.Easy;
 /**
  * LeetCode 110: Balanced Binary Tree
  * 

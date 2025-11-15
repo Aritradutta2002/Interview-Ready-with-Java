@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.BASICS;
 /**
  * Count Set Bits (Hamming Weight) - Multiple Approaches
  * 

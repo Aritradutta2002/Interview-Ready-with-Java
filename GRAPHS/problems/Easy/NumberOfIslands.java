@@ -1,3 +1,4 @@
+package GRAPHS.problems.Easy;
 /**
  * LeetCode 200: Number of Islands
  * 

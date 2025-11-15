@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.EASY;
 /**
  * LeetCode 191: Number of 1 Bits (Hamming Weight)
  * Difficulty: Easy

@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.EASY;
 /**
  * LeetCode 190: Reverse Bits
  * Difficulty: Easy

@@ -1,3 +1,4 @@
+package GRAPHS.problems.Medium;
 import java.util.*;
 
 public class NetworkDelayTime {

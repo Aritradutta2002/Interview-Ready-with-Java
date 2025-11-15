@@ -2,6 +2,7 @@ package COLLECTION_FRAMEWORK;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Collection Framework Interview Problems and Solutions
@@ -479,14 +480,6 @@ class LRUCache<K, V> extends LinkedHashMap<K, V> {
     protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
         return size() > capacity;
     }
-    
-    public V get(K key) {
-        return super.get(key);
-    }
-    
-    public V put(K key, V value) {
-        return super.put(key, value);
-    }
 }
 
 /**
@@ -602,6 +595,3 @@ class FilterIterator<T> implements Iterator<T> {
         return result;
     }
 }
-
-// Import for Stream class
-import java.util.stream.Stream;

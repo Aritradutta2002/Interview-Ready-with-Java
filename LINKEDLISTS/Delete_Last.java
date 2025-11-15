@@ -1,4 +1,4 @@
-package LINKED_LISTS;
+package LINKEDLISTS;
 @SuppressWarnings("unused")
 
 public class Delete_Last {

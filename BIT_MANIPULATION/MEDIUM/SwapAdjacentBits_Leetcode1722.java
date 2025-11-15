@@ -1,3 +1,4 @@
+package BIT_MANIPULATION.MEDIUM;
 /**
  * Swap Adjacent Bits Problem
  * Difficulty: Medium

@@ -1,4 +1,4 @@
-package LINKED_LISTS;
+package LINKEDLISTS;
 import java.util.*;
 public class DeleteAnywhere {
     static class Node{

@@ -1,4 +1,4 @@
-package AllMixedCodes;
+package MixedCodes;
 import java.util.*;
 public class JavaClass_01 {
     public static void main(String[] args) {

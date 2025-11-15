@@ -1,4 +1,4 @@
-package com.aritra;
+package HASHMAPS;
 import java.util.*;
 
 public class Generics_01 {
