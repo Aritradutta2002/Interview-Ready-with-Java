@@ -8,7 +8,7 @@ package STACK_QUEUE.QUEUE;
  * boolean param_4 = obj.empty();
  */
 
-package STACK_QUEUE.QUEUE;
+
 
 import java.util.LinkedList;
 import java.util.Queue;
