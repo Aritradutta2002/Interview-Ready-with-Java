@@ -481,134 +481,14 @@ class Room {
 
 ## SOLID in OOP Context
 
-### 1. Single Responsibility Principle
+> **📌 For full SOLID coverage with detailed examples, see [10-SOLID-Principles/](../10-SOLID-Principles/)**
 
-```java
-// ❌ Bad: Multiple responsibilities
-class Employee {
-    void calculatePay() { }
-    void saveToDatabase() { }
-    void generateReport() { }
-}
-
-// ✅ Good: Separate responsibilities
-class Employee {
-    private String name;
-    // Only employee data
-}
-
-class PayCalculator {
-    double calculatePay(Employee emp) { }
-}
-
-class EmployeeRepository {
-    void save(Employee emp) { }
-}
-
-class ReportGenerator {
-    String generateReport(Employee emp) { }
-}
-```
-
-### 2. Open/Closed Principle
-
-```java
-// ❌ Bad: Modify existing code for new shapes
-class AreaCalculator {
-    double calculate(Object shape) {
-        if (shape instanceof Rectangle) {
-            // calculate rectangle
-        } else if (shape instanceof Circle) {
-            // calculate circle
-        }
-        // Add more if-else for new shapes
-    }
-}
-
-// ✅ Good: Extend without modifying
-interface Shape {
-    double calculateArea();
-}
-
-class Rectangle implements Shape {
-    public double calculateArea() { }
-}
-
-class Circle implements Shape {
-    public double calculateArea() { }
-}
-
-class AreaCalculator {
-    double calculate(Shape shape) {
-        return shape.calculateArea();  // Works for any new shape
-    }
-}
-```
-
-### 3. Liskov Substitution Principle
-
-```java
-// ✅ Substitutable
-class Bird {
-    void eat() { }
-}
-
-class FlyingBird extends Bird {
-    void fly() { }
-}
-
-class Sparrow extends FlyingBird { }
-class Penguin extends Bird { }  // Doesn't fly, but IS-A Bird
-```
-
-### 4. Interface Segregation Principle
-
-```java
-// ❌ Bad: Fat interface
-interface Worker {
-    void work();
-    void eat();
-}
-
-// Robot forced to implement eat()!
-
-// ✅ Good: Segregated interfaces
-interface Workable {
-    void work();
-}
-
-interface Feedable {
-    void eat();
-}
-
-class Human implements Workable, Feedable { }
-class Robot implements Workable { }
-```
-
-### 5. Dependency Inversion Principle
-
-```java
-// ❌ Bad: High-level depends on low-level
-class Application {
-    private MySQLDatabase database = new MySQLDatabase();  // Direct dependency
-}
-
-// ✅ Good: Depend on abstraction
-interface Database {
-    void save(String data);
-}
-
-class MySQLDatabase implements Database { }
-class MongoDatabase implements Database { }
-
-class Application {
-    private Database database;  // Depends on abstraction
-    
-    public Application(Database database) {  // Dependency injection
-        this.database = database;
-    }
-}
-```
+Quick OOP-focused summary:
+- **S - Single Responsibility:** One class, one reason to change
+- **O - Open/Closed:** Open for extension, closed for modification (use interfaces)
+- **L - Liskov Substitution:** Subtypes must be substitutable for parent types
+- **I - Interface Segregation:** Prefer small, specific interfaces over fat ones
+- **D - Dependency Inversion:** Depend on abstractions, not concrete implementations
 
 ---
 
@@ -629,25 +509,14 @@ class Application {
 ### Q5: Difference between shallow and deep copy?
 **A:** Shallow copies references, deep copies actual objects. Use clone() or copy constructor.
 
-### Q6: What is transient keyword?
-**A:** Prevents field from being serialized. Used for sensitive or derived data.
-
-### Q7: Association vs Aggregation vs Composition?
+### Q6: Association vs Aggregation vs Composition?
 **A:** 
 - Association: Uses relationship
 - Aggregation: Has-A, independent lifetime
 - Composition: Contains, dependent lifetime
 
-### Q8: What is serialVersionUID?
+### Q7: What is serialVersionUID?
 **A:** Version number for serialization. Ensures compatibility between serialized and deserialized objects.
 
-### Q9: Externalizable vs Serializable?
-**A:** Externalizable gives full control over serialization process. Better performance, more work.
-
-### Q10: Explain SOLID principles?
-**A:**
-- S: Single Responsibility
-- O: Open/Closed
-- L: Liskov Substitution
-- I: Interface Segregation
-- D: Dependency Inversion
+### Q8: Serializable vs Externalizable?
+**A:** Externalizable gives full control over serialization process. See [15-IO-NIO/](../15-IO-NIO/) for detailed coverage.

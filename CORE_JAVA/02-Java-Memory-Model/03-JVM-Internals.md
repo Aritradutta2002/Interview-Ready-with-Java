@@ -188,4 +188,149 @@ int result = a + b;
 ```java
 // Object doesn't escape method → allocate on stack
 public void method() {
-    Point p = new Point
+    Point p = new Point(1, 2);  // JIT may allocate on stack!
+    int sum = p.x + p.y;
+    // p doesn't escape → no heap allocation
+}
+
+// Object escapes → must be on heap
+public Point createPoint() {
+    Point p = new Point(1, 2);
+    return p;  // Escapes via return → heap allocation
+}
+```
+
+**Benefits of Escape Analysis:**
+- Stack allocation (faster, no GC needed)
+- Scalar replacement (replace object with individual fields)
+- Lock elision (remove unnecessary synchronization)
+
+**3. Loop Unrolling**
+```java
+// Before
+for (int i = 0; i < 4; i++) {
+    sum += arr[i];
+}
+
+// After unrolling
+sum += arr[0];
+sum += arr[1];
+sum += arr[2];
+sum += arr[3];
+// Eliminates loop overhead
+```
+
+**4. Dead Code Elimination**
+```java
+public void method() {
+    int x = computeExpensiveValue();
+    // x is never used → JIT removes the computation entirely
+}
+```
+
+**5. Null Check Elimination**
+```java
+// JIT can remove redundant null checks after profiling
+if (obj != null) {
+    obj.method();   // JIT knows obj is not null here
+    obj.method2();  // No null check needed
+}
+```
+
+### JIT Flags
+```bash
+# Print compilation info
+-XX:+PrintCompilation
+
+# Print inlining decisions
+-XX:+PrintInlining
+
+# Disable JIT (for debugging)
+-Djava.compiler=NONE
+
+# Set compilation threshold
+-XX:CompileThreshold=10000  # Methods called 10000 times get compiled
+```
+
+---
+
+## 4. Class Loading Scenarios
+
+### When is a Class Loaded?
+```java
+// 1. New instance
+new MyClass();
+
+// 2. Static method call
+MyClass.staticMethod();
+
+// 3. Static field access (non-constant)
+int x = MyClass.staticVar;
+
+// 4. Reflection
+Class.forName("com.example.MyClass");
+
+// 5. Subclass loaded → parent loaded first
+class Child extends Parent { }  // Parent loaded first
+
+// NOT loaded:
+// - Declaring a reference: MyClass obj;  (no loading)
+// - Accessing constant: MyClass.CONSTANT  (inlined at compile time)
+```
+
+### ClassNotFoundException vs NoClassDefFoundError
+
+| Exception | When | Cause |
+|-----------|------|-------|
+| ClassNotFoundException | Runtime | Class.forName() fails, class not in classpath |
+| NoClassDefFoundError | Runtime | Class was available at compile time but not at runtime |
+
+---
+
+## 5. Java Compilation Pipeline
+
+```
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  .java   │ →  │  javac   │ →  │  .class  │ →  │   JVM    │
+│ (source) │    │(compiler)│    │(bytecode)│    │(execute) │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘
+                                                     │
+                                            ┌────────┴────────┐
+                                            │                 │
+                                      ┌─────▼─────┐   ┌──────▼─────┐
+                                      │Interpreter│   │    JIT     │
+                                      │ (line by  │   │ (compile   │
+                                      │   line)   │   │ hot code)  │
+                                      └───────────┘   └────────────┘
+```
+
+**javac** compiles `.java` → `.class` (bytecode)
+**JVM** loads and executes bytecode via interpreter + JIT
+
+---
+
+## Interview Q&A
+
+**Q: What is the difference between JDK, JRE, and JVM?**
+A: JDK = JRE + dev tools (compiler, debugger). JRE = JVM + runtime libraries. JVM = Virtual machine that executes bytecode.
+
+**Q: What is parent delegation model in ClassLoader?**
+A: Child classloader delegates to parent first. Prevents core classes from being overridden.
+
+**Q: What is the difference between C1 and C2 compilers?**
+A: C1 = Client compiler (fast compile, simple optimizations). C2 = Server compiler (slow compile, aggressive optimizations).
+
+**Q: What is Escape Analysis?**
+A: JIT optimization that checks if an object escapes a method. If not, it can be stack-allocated or scalar-replaced.
+
+**Q: What is method inlining?**
+A: JIT replaces method call with the method body. Eliminates call overhead. Works best for small, frequently called methods.
+
+**Q: What is invokedynamic?**
+A: Bytecode instruction (Java 7+) for dynamic method dispatch. Used by lambdas, method references, and dynamic languages on JVM.
+
+**Q: What does javap -c do?**
+A: Disassembles .class file to show bytecode instructions. Useful for understanding what compiler generates.
+
+**Q: How does JVM decide which code to JIT compile?**
+A: Tracks method invocation count and loop back-edge count. When threshold reached (default ~10,000), JIT compiles the method.

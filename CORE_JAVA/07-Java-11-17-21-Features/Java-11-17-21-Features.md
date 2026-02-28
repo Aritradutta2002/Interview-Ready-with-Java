@@ -331,4 +331,83 @@ int age = 30;
 String message = STR."Hello \{name}, you are \{age} years old";
 
 // With expressions
-String info =
+String info = STR."Name: \{name.toUpperCase()}, Age: \{age + 1}";
+
+// Multi-line
+String html = STR."""
+    <html>
+        <body>
+            <p>Hello \{name}</p>
+        </body>
+    </html>
+    """;
+```
+
+**Note:** String Templates were a preview feature in Java 21 and may change in future releases.
+
+### 6. Structured Concurrency (Incubator)
+```java
+// Manage multiple concurrent tasks as a single unit
+try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+    Subtask<String> user = scope.fork(() -> fetchUser(id));
+    Subtask<Integer> order = scope.fork(() -> fetchOrder(id));
+    
+    scope.join();           // Wait for both
+    scope.throwIfFailed();  // Propagate errors
+    
+    return new Response(user.get(), order.get());
+}
+// If one task fails, the other is cancelled automatically
+```
+
+---
+
+## Version Comparison Summary
+
+| Feature | Java 11 | Java 17 | Java 21 |
+|---------|---------|---------|--------|
+| var in lambda | ✅ | ✅ | ✅ |
+| String methods | ✅ | ✅ | ✅ |
+| Records | | ✅ | ✅ |
+| Sealed classes | | ✅ | ✅ |
+| Pattern matching instanceof | | ✅ | ✅ |
+| Text blocks | | ✅ | ✅ |
+| Switch expressions | | ✅ | ✅ |
+| Virtual Threads | | | ✅ |
+| Sequenced Collections | | | ✅ |
+| Pattern matching switch | | | ✅ |
+| Record patterns | | | ✅ |
+
+---
+
+## Interview Q&A
+
+**Q: What is the difference between var and explicit types?**
+A: `var` is type inference — compiler determines type. No runtime difference. Only for local variables.
+
+**Q: When to use Records vs regular classes?**
+A: Records for immutable data carriers. Use regular classes when you need mutability, custom equals/hashCode, or inheritance.
+
+**Q: What are sealed classes used for?**
+A: Restrict which classes can extend/implement a type. Enables exhaustive pattern matching in switch.
+
+**Q: What is the benefit of Virtual Threads?**
+A: Lightweight threads (millions possible). No thread pool needed. Blocking operations don't block OS threads. Best for I/O-bound tasks.
+
+**Q: Virtual Threads vs Platform Threads?**
+A: Platform threads map 1:1 to OS threads (expensive, ~1MB stack). Virtual threads are managed by JVM (cheap, ~1KB), multiplexed onto few OS threads.
+
+**Q: What are Sequenced Collections?**
+A: New interfaces (Java 21) that provide defined encounter order with `getFirst()`, `getLast()`, `reversed()` methods.
+
+**Q: What is Pattern Matching for switch?**
+A: Switch can match on types directly with guards: `case String s when s.length() > 5 -> ...`
+
+**Q: Difference between Text Blocks and regular Strings?**
+A: Text blocks preserve formatting, support multi-line without `\n`, auto-strip indentation. Enclosed in `"""`.
+
+**Q: Can Records extend other classes?**
+A: No. Records implicitly extend `java.lang.Record`. They can implement interfaces.
+
+**Q: What is the difference between `strip()` and `trim()`?**
+A: `strip()` (Java 11) is Unicode-aware, handles all whitespace characters. `trim()` only handles ASCII whitespace (<= U+0020).

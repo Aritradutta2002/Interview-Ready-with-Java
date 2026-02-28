@@ -15,6 +15,11 @@
 | 09 | [Design Patterns](./09-Design-Patterns/) | ⭐⭐⭐⭐⭐ |
 | 10 | [SOLID Principles](./10-SOLID-Principles/) | ⭐⭐⭐⭐ |
 | 11 | [Data Structures & Algorithms](./11-DSA/) | ⭐⭐⭐⭐⭐ |
+| 12 | [Strings & String Internals](./12-Strings/) | ⭐⭐⭐⭐⭐ |
+| 13 | [Enums Deep Dive](./13-Enums/) | ⭐⭐⭐⭐ |
+| 14 | [Reflection & Annotations](./14-Reflection-Annotations/) | ⭐⭐⭐ |
+| 15 | [I/O & NIO](./15-IO-NIO/) | ⭐⭐⭐⭐ |
+| 16 | [JDBC](./16-JDBC/) | ⭐⭐⭐⭐ |
 
 ## Interview Tips by Experience Level
 
@@ -43,12 +48,13 @@
 ## Study Strategy
 
 ```
-Week 1-2: Core Java + OOP + Collections
+Week 1-2: Core Java + OOP + Collections + Strings + Enums
 Week 3: Java 8 Features + Generics
 Week 4: Multithreading & Concurrency
 Week 5: JVM Internals + Memory Model
 Week 6: Design Patterns + SOLID
-Week 7-8: DSA Practice + Mock Interviews
+Week 7: I/O & NIO + JDBC + Reflection & Annotations
+Week 8-9: DSA Practice + Mock Interviews
 ```
 
 ---

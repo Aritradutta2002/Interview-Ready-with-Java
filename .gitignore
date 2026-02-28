@@ -1,0 +1,73 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+.metadata/
+*.sublime-project
+*.sublime-workspace
+
+# Compiled Java files
+*.class
+*.jar
+*.war
+*.ear
+
+# Build directories
+bin/
+build/
+dist/
+out/
+target/
+
+# Gradle
+.gradle/
+build/
+gradle/
+gradlew
+gradlew.bat
+
+# Maven
+.m2/
+.maven/
+
+# Ant
+lib/
+
+# OS specific
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Environment and configuration
+.env
+.env.local
+*.properties
+!gradle.properties
+!maven.properties
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.temp
+*~
+.~*
+
+# Runtime files
+*.pid
+.blackboxcli/
