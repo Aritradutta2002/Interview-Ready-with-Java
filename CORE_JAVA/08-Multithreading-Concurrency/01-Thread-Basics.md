@@ -269,3 +269,211 @@ A: No. Throws IllegalThreadStateException.
 
 **Q: What is thread starvation?**
 A: When a thread cannot gain CPU time due to other threads with higher priority.
+
+
+---
+
+## Common Traps
+
+### ❌ Trap 1: Calling run() Instead of start()
+
+**Why it's wrong**:
+Calling run() directly executes in the current thread, not a new thread.
+
+**Incorrect Code**:
+```java
+Thread thread = new Thread(() -> {
+    System.out.println("Thread: " + Thread.currentThread().getName());
+});
+thread.run();  // ❌ Executes in main thread!
+// Output: Thread: main
+```
+
+**Correct Code**:
+```java
+Thread thread = new Thread(() -> {
+    System.out.println("Thread: " + Thread.currentThread().getName());
+});
+thread.start();  // ✅ Creates new thread
+// Output: Thread: Thread-0
+```
+
+**Interview Tip**:
+Always use start() to create a new thread. run() is just a regular method call.
+
+---
+
+### ❌ Trap 2: Not Handling InterruptedException Properly
+
+**Why it's wrong**:
+Swallowing InterruptedException or not restoring interrupt status breaks thread cancellation.
+
+**Incorrect Code**:
+```java
+public void process() {
+    try {
+        Thread.sleep(1000);
+    } catch (InterruptedException e) {
+        // ❌ Swallowing exception - interrupt status lost!
+    }
+}
+```
+
+**Correct Code**:
+```java
+// Option 1: Propagate exception
+public void process() throws InterruptedException {
+    Thread.sleep(1000);
+}
+
+// Option 2: Restore interrupt status
+public void process() {
+    try {
+        Thread.sleep(1000);
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();  // ✅ Restore interrupt status
+        // Handle interruption
+    }
+}
+```
+
+**Interview Tip**:
+Either propagate InterruptedException or restore interrupt status with Thread.currentThread().interrupt().
+
+---
+
+### ❌ Trap 3: Using notify() Instead of notifyAll()
+
+**Why it's wrong**:
+notify() wakes only one thread, which might not be the right one, causing deadlock.
+
+**Incorrect Code**:
+```java
+class SharedResource {
+    private int value = 0;
+    
+    public synchronized void produce() throws InterruptedException {
+        while (value == 10) wait();
+        value++;
+        notify();  // ❌ Might wake another producer instead of consumer!
+    }
+    
+    public synchronized void consume() throws InterruptedException {
+        while (value == 0) wait();
+        value--;
+        notify();  // ❌ Might wake another consumer instead of producer!
+    }
+}
+```
+
+**Correct Code**:
+```java
+class SharedResource {
+    private int value = 0;
+    
+    public synchronized void produce() throws InterruptedException {
+        while (value == 10) wait();
+        value++;
+        notifyAll();  // ✅ Wake all waiting threads
+    }
+    
+    public synchronized void consume() throws InterruptedException {
+        while (value == 0) wait();
+        value--;
+        notifyAll();  // ✅ Wake all waiting threads
+    }
+}
+```
+
+**Interview Tip**:
+Use notifyAll() unless you're certain only one type of thread is waiting. notify() can cause subtle deadlocks.
+
+---
+
+### ❌ Trap 4: Using if Instead of while with wait()
+
+**Why it's wrong**:
+Spurious wakeups can occur, causing thread to proceed without condition being met.
+
+**Incorrect Code**:
+```java
+public synchronized void consume() throws InterruptedException {
+    if (queue.isEmpty()) {  // ❌ if statement
+        wait();
+    }
+    // Spurious wakeup might occur - queue still empty!
+    Object item = queue.remove();  // NoSuchElementException!
+}
+```
+
+**Correct Code**:
+```java
+public synchronized void consume() throws InterruptedException {
+    while (queue.isEmpty()) {  // ✅ while loop
+        wait();
+    }
+    // Condition rechecked after wakeup
+    Object item = queue.remove();
+}
+```
+
+**Interview Tip**:
+Always use while loop with wait() to recheck condition after wakeup. This handles spurious wakeups and multiple consumers.
+
+---
+
+### ❌ Trap 5: Synchronizing on Mutable Object
+
+**Why it's wrong**:
+If the lock object changes, threads synchronize on different objects, losing synchronization.
+
+**Incorrect Code**:
+```java
+class Counter {
+    private Integer count = 0;  // ❌ Mutable wrapper
+    
+    public void increment() {
+        synchronized(count) {  // ❌ Lock object changes!
+            count++;  // Creates new Integer object
+        }
+    }
+}
+```
+
+**Correct Code**:
+```java
+class Counter {
+    private int count = 0;
+    private final Object lock = new Object();  // ✅ Immutable lock
+    
+    public void increment() {
+        synchronized(lock) {  // ✅ Lock never changes
+            count++;
+        }
+    }
+    
+    // Or synchronize on this
+    public synchronized void increment() {
+        count++;
+    }
+}
+```
+
+**Interview Tip**:
+Always synchronize on a final, immutable object. Never synchronize on Integer, String, or other mutable wrappers.
+
+---
+
+## Related Topics
+
+- [Executor Framework](./02-Executor-Framework.md) - Thread pools and task execution
+- [Locks & Atomic Classes](./03-Locks-Atomic.md) - Advanced synchronization mechanisms
+- [Concurrency Problems](./04-Concurrency-Problems.md) - Deadlock, race conditions, thread safety
+- [Collections Framework - ConcurrentHashMap](../04-Collections-Framework/02-Map-Implementations.md#concurrenthashmap-very-important) - Thread-safe collections
+- [Java 8 Features - CompletableFuture](../06-Java-8-Features/03-Optional-CompletableFuture.md) - Asynchronous programming
+- [Java Memory Model](../02-Java-Memory-Model/01-Memory-Areas.md) - Thread stacks and heap
+
+---
+
+*Last Updated: February 2026*
+*Java Version: 8, 11, 17, 21*

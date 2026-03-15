@@ -1,0 +1,77 @@
+# Docker for Java Backend
+
+## Overview
+
+This area covers Docker containerization specifically for Java backend applications. Topics include Docker fundamentals, creating optimized Dockerfiles for Java, multi-stage builds, Java container optimization (JVM tuning, memory management), and Docker Compose for multi-container applications.
+
+## Quick Navigation
+
+| # | Topic | Priority | Status |
+|---|-------|----------|--------|
+| 01 | [Docker Basics](./01-Docker-Basics/) | ⭐⭐⭐⭐⭐ | 🚧 Planned |
+| 02 | [Dockerfile for Java](./02-Dockerfile-Java/) | ⭐⭐⭐⭐⭐ | 🚧 Planned |
+| 03 | [Multi-Stage Builds](./03-Multi-Stage-Builds/) | ⭐⭐⭐⭐ | 🚧 Planned |
+| 04 | [Java Container Optimization](./04-Java-Container-Optimization/) | ⭐⭐⭐⭐ | 🚧 Planned |
+| 05 | [Docker Compose](./05-Docker-Compose/) | ⭐⭐⭐ | 🚧 Planned |
+
+## Learning Path
+
+### Week 1: Docker Fundamentals
+- [ ] Docker concepts - Images, Containers, Volumes
+- [ ] Docker commands - build, run, exec, logs
+- [ ] Docker networking basics
+- [ ] Docker volumes and data persistence
+
+### Week 2: Java Containerization
+- [ ] Creating Dockerfiles for Java applications
+- [ ] JVM memory configuration in containers
+- [ ] Multi-stage builds for smaller images
+- [ ] Layer caching optimization
+
+### Week 3: Advanced Topics
+- [ ] Java container optimization techniques
+- [ ] Docker Compose for multi-container apps
+- [ ] Health checks and monitoring
+- [ ] Security best practices
+
+## Interview Tips by Experience Level
+
+### Junior (0-2 years)
+- Focus: Basic Docker concepts, creating simple Dockerfiles
+- Depth: Understand what containers are and how to run Java apps in Docker
+- Key Topics: docker build, docker run, basic Dockerfile syntax
+
+### Mid-Level (2-5 years)
+- Focus: Optimized Dockerfiles, multi-stage builds, JVM tuning
+- Depth: Understand image optimization and container resource management
+- Key Topics: Multi-stage builds, JVM flags, layer caching
+
+### Senior (5+ years)
+- Focus: Production deployment, security, orchestration integration
+- Depth: Design decisions, performance optimization, troubleshooting
+- Key Topics: Container security, resource limits, production best practices
+
+## Most Asked Topics
+
+1. **Dockerfile for Java** - Creating efficient Dockerfiles for Spring Boot apps
+2. **Multi-Stage Builds** - Reducing image size using multi-stage builds
+3. **JVM Memory in Containers** - Configuring heap and container memory limits
+4. **Layer Caching** - Optimizing build times with proper layer ordering
+5. **Docker Compose** - Running multi-container applications (app + database)
+6. **Container Security** - Running as non-root, scanning for vulnerabilities
+7. **Health Checks** - Implementing container health checks
+
+## Study Strategy
+
+1. Start with Docker basics to understand containers vs VMs
+2. Learn to create Dockerfiles for Java applications
+3. Practice multi-stage builds to reduce image size
+4. Study JVM memory configuration for containers
+5. Learn Docker Compose for local development
+6. Understand security best practices
+7. Practice troubleshooting container issues
+
+---
+
+*Last Updated: 2024*
+*Docker Version: 20.x+*

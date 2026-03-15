@@ -341,6 +341,8 @@ test(null);  // "String" — most specific type wins
 
 ## Interview Questions
 
+### Basic Level
+
 **Q: What is the difference between compile-time and runtime polymorphism?**
 A: Compile-time = overloading (resolved by compiler based on reference type). Runtime = overriding (resolved by JVM based on actual object type).
 
@@ -359,11 +361,161 @@ A: At runtime when you downcast to a type that the actual object is NOT an insta
 **Q: Are fields polymorphic in Java?**
 A: No. Fields are resolved by reference type at compile time, not by object type.
 
-**Q: Why shouldn't you call overridable methods from constructors?**
-A: The overridden method runs before the subclass fields are initialized, leading to unexpected behavior (fields have default values like 0 or null).
-
 **Q: What are covariant return types?**
 A: Overridden method can return a subtype of parent's return type. Available since Java 5.
 
+### Intermediate Level
+
+**Q: Why shouldn't you call overridable methods from constructors?**
+A: The overridden method runs before the subclass fields are initialized, leading to unexpected behavior (fields have default values like 0 or null).
+
 **Q: What does `null` resolve to in overloaded methods?**
 A: The most specific type. If ambiguous (multiple equally specific types), it's a compile error. Explicit cast resolves it: `test((String) null)`.
+
+**Q: Can you override a private method?**
+A: No. Private methods are not inherited, so you can't override them. You can define a method with the same signature in the subclass, but it's a new method, not an override.
+
+**Q: Can you override a static method?**
+A: No. Static methods are bound at compile time (static binding). You can define a static method with the same signature in the subclass, but it's method hiding, not overriding.
+
+**Q: What is method hiding?**
+A: When a subclass defines a static method with the same signature as a static method in the parent class. The method called depends on the reference type, not the object type.
+
+**Q: Can you override a final method?**
+A: No. Final methods cannot be overridden. Attempting to do so results in a compile error.
+
+**Q: What happens if you change the return type in an overridden method?**
+A: You can only return a covariant type (subtype). Returning an unrelated type or supertype causes a compile error.
+
+**Q: Can you change the access modifier when overriding?**
+A: Yes, but only to a more accessible level. You cannot reduce visibility (e.g., public → protected is not allowed).
+
+### Advanced Level
+
+**Q: Explain the difference between method overloading and method overriding with respect to exception handling.**
+A: Overloading has no restrictions on exceptions. Overriding can throw same, subclass, or no exception, but NOT a broader checked exception than the parent method.
+
+**Q: What is the diamond problem in Java and how does Java solve it?**
+A: When a class inherits from two interfaces with the same default method. Java requires the class to explicitly override the method and choose which implementation to use via `InterfaceName.super.method()`.
+
+**Q: How does the JVM implement dynamic method dispatch?**
+A: Using a virtual method table (vtable). Each class has a vtable with pointers to method implementations. At runtime, JVM looks up the actual object's vtable to find the correct method.
+
+**Q: What is the performance difference between compile-time and runtime polymorphism?**
+A: Compile-time is faster (resolved at compile time). Runtime has slight overhead due to vtable lookup, but modern JVMs optimize this with JIT compilation and method inlining.
+
+**Q: Can you have covariant return types with primitive types?**
+A: No. Covariance only works with reference types. Primitives cannot be subtypes of each other in the inheritance sense.
+
+**Q: What is contravariant parameter types and does Java support it?**
+A: Contravariance means overridden method can accept a supertype parameter. Java does NOT support this - parameters must be exactly the same type (invariant).
+
+**Q: Explain the Liskov Substitution Principle in the context of polymorphism.**
+A: Objects of a superclass should be replaceable with objects of a subclass without breaking the application. Overridden methods should not weaken preconditions or strengthen postconditions.
+
+**Q: How does polymorphism work with generics and type erasure?**
+A: Generics are erased at runtime. Polymorphism works on the erased types. Bridge methods are generated to maintain polymorphism when generic types are involved.
+
+### Scenario-Based Questions
+
+**Q: What will this code print and why?**
+```java
+class Parent {
+    void display() { System.out.println("Parent"); }
+}
+class Child extends Parent {
+    void display() { System.out.println("Child"); }
+}
+Parent p = new Child();
+p.display();
+```
+A: Prints "Child". Runtime polymorphism - JVM uses the actual object type (Child), not the reference type (Parent).
+
+**Q: What will this code print and why?**
+```java
+class Test {
+    void show(Object o) { System.out.println("Object"); }
+    void show(String s) { System.out.println("String"); }
+}
+new Test().show(null);
+```
+A: Prints "String". Compile-time resolution chooses the most specific type. String is more specific than Object.
+
+**Q: What will this code print and why?**
+```java
+class Parent {
+    int x = 10;
+}
+class Child extends Parent {
+    int x = 20;
+}
+Parent p = new Child();
+System.out.println(p.x);
+```
+A: Prints "10". Fields are not polymorphic - resolved by reference type (Parent), not object type (Child).
+
+**Q: Will this code compile? If yes, what will it print?**
+```java
+class Parent {
+    Number getValue() { return 10; }
+}
+class Child extends Parent {
+    Integer getValue() { return 20; }
+}
+Parent p = new Child();
+System.out.println(p.getValue());
+```
+A: Yes, compiles. Prints "20". Covariant return type - Integer is a subtype of Number. Runtime polymorphism applies.
+
+**Q: What's wrong with this code?**
+```java
+class Parent {
+    void process(int x) throws IOException { }
+}
+class Child extends Parent {
+    void process(int x) throws Exception { }
+}
+```
+A: Compile error. Overridden method cannot throw a broader checked exception (Exception) than the parent method (IOException).
+
+### Tricky Interview Scenarios
+
+**Q: What will this code print?**
+```java
+class A {
+    void m1() { System.out.print("A"); }
+}
+class B extends A {
+    void m1() { System.out.print("B"); }
+    void m2() { m1(); }
+}
+class C extends B {
+    void m1() { System.out.print("C"); }
+}
+A a = new C();
+((B) a).m2();
+```
+A: Prints "C". Even though we cast to B, the actual object is C. When m2() calls m1(), it uses dynamic dispatch and calls C's m1().
+
+**Q: What will this code print?**
+```java
+class Test {
+    void show(int... x) { System.out.println("varargs"); }
+    void show(int x) { System.out.println("int"); }
+}
+new Test().show(10);
+```
+A: Prints "int". Exact match beats varargs in overload resolution.
+
+**Q: What will this code print?**
+```java
+class Parent {
+    static void display() { System.out.println("Parent"); }
+}
+class Child extends Parent {
+    static void display() { System.out.println("Child"); }
+}
+Parent p = new Child();
+p.display();
+```
+A: Prints "Parent". Static methods are not polymorphic - resolved by reference type at compile time (method hiding, not overriding).

@@ -29,6 +29,10 @@ Interview-Ready-with-Java/
 │   ├── 10-SOLID-Principles/   # SOLID Principles
 │   └── 11-DSA/                # DSA Quick Reference
 │
+├── 📂 JAVA_BACKEND_INTERVIEW/ # End-to-end backend interview roadmap
+│   ├── README.md              # March-to-May 2026 roadmap
+│   └── CHECKLIST.md           # Self-assessment checklist
+│
 └── 📂 JAVA_DSA/               # Data Structures & Algorithms
     ├── ARRAYS/                # Array problems & patterns
     ├── BACKTRACKING/          # Backtracking algorithms
@@ -146,6 +150,12 @@ Click on any folder to explore detailed interview notes and concepts.
 ---
 
 ## 🎯 Interview Preparation Guide
+
+### Java Backend Track
+
+- Follow the end-to-end roadmap in [JAVA_BACKEND_INTERVIEW/README.md](JAVA_BACKEND_INTERVIEW/README.md)
+- Use the self-review sheet in [JAVA_BACKEND_INTERVIEW/CHECKLIST.md](JAVA_BACKEND_INTERVIEW/CHECKLIST.md)
+- Best fit for candidates targeting Java backend rounds by **May 31, 2026**
 
 ### For Beginners
 1. Start with [BASICS](JAVA_DSA/BASICS) and [ARRAYS](JAVA_DSA/ARRAYS)

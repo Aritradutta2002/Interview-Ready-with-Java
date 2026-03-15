@@ -1,5 +1,21 @@
 # Exception Handling - Complete Guide
 
+## Table of Contents
+1. [Exception Hierarchy](#exception-hierarchy)
+2. [Checked vs Unchecked Exceptions](#checked-vs-unchecked-exceptions)
+3. [Common Exceptions](#common-exceptions)
+4. [Exception Handling Keywords](#exception-handling-keywords)
+5. [Throw vs Throws](#throw-vs-throws)
+6. [Custom Exception](#custom-exception)
+7. [Exception Chaining](#exception-chaining)
+8. [Best Practices](#best-practices)
+9. [Exception Handling Patterns](#exception-handling-patterns)
+10. [Interview Q&A](#interview-qa)
+11. [Common Traps](#common-traps)
+12. [Related Topics](#related-topics)
+
+---
+
 ## Exception Hierarchy
 
 ```
@@ -300,3 +316,207 @@ A: No, it's unchecked. Compiler doesn't enforce handling.
 
 **Q: Can we have empty catch block?**
 A: Yes, but it's bad practice. At minimum, log the exception.
+
+---
+
+## Common Traps
+
+### ❌ Trap 1: Swallowing Exceptions
+
+**Why it's wrong**:
+Silent failures make debugging impossible and hide critical errors.
+
+**Incorrect Code**:
+```java
+try {
+    processPayment(amount);
+} catch (Exception e) {
+    // Do nothing - exception swallowed
+}
+```
+
+**Correct Code**:
+```java
+try {
+    processPayment(amount);
+} catch (PaymentException e) {
+    logger.error("Payment processing failed", e);
+    throw new BusinessException("Unable to process payment", e);
+}
+```
+
+**Interview Tip**:
+Always log exceptions at minimum. If you can't handle it, rethrow it or wrap it in a higher-level exception.
+
+---
+
+### ❌ Trap 2: Catching Exception Instead of Specific Types
+
+**Why it's wrong**:
+Catching generic Exception catches everything including RuntimeExceptions you didn't intend to handle.
+
+**Incorrect Code**:
+```java
+try {
+    String data = readFile(path);
+    int value = Integer.parseInt(data);
+} catch (Exception e) {
+    // Catches IOException, NumberFormatException, and even NullPointerException
+    return defaultValue;
+}
+```
+
+**Correct Code**:
+```java
+try {
+    String data = readFile(path);
+    int value = Integer.parseInt(data);
+} catch (IOException e) {
+    logger.error("Failed to read file", e);
+    throw new DataAccessException("Cannot read configuration", e);
+} catch (NumberFormatException e) {
+    logger.warn("Invalid number format, using default");
+    return defaultValue;
+}
+```
+
+**Interview Tip**:
+Catch specific exceptions. Only catch Exception if you truly need to handle all exceptions at that level.
+
+---
+
+### ❌ Trap 3: Finally Block Overriding Return Value
+
+**Why it's wrong**:
+Return statement in finally block overrides return from try/catch, causing unexpected behavior.
+
+**Incorrect Code**:
+```java
+public int getValue() {
+    try {
+        return 10;
+    } finally {
+        return 20;  // This overrides the try block's return
+    }
+}
+// Returns 20, not 10!
+```
+
+**Correct Code**:
+```java
+public int getValue() {
+    int result = 0;
+    try {
+        result = 10;
+    } finally {
+        // Cleanup only, no return
+        logger.debug("Method completed");
+    }
+    return result;
+}
+```
+
+**Interview Tip**:
+Never use return statements in finally blocks. Use finally only for cleanup operations.
+
+---
+
+### ❌ Trap 4: Not Closing Resources in Pre-Java 7 Code
+
+**Why it's wrong**:
+If exception occurs before close(), resource leaks happen.
+
+**Incorrect Code**:
+```java
+BufferedReader br = new BufferedReader(new FileReader("file.txt"));
+try {
+    String line = br.readLine();
+    // process line
+    br.close();  // Never reached if exception occurs
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+**Correct Code (Pre-Java 7)**:
+```java
+BufferedReader br = null;
+try {
+    br = new BufferedReader(new FileReader("file.txt"));
+    String line = br.readLine();
+    // process line
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    if (br != null) {
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+**Correct Code (Java 7+)**:
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+    String line = br.readLine();
+    // process line
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+**Interview Tip**:
+Always use try-with-resources for AutoCloseable resources. It handles closing even if exceptions occur.
+
+---
+
+### ❌ Trap 5: Throwing Exception from Finally Block
+
+**Why it's wrong**:
+Exception thrown in finally suppresses the original exception from try block.
+
+**Incorrect Code**:
+```java
+try {
+    throw new IOException("Original exception");
+} finally {
+    throw new RuntimeException("Finally exception");
+}
+// Only RuntimeException is thrown, IOException is lost!
+```
+
+**Correct Code**:
+```java
+try {
+    throw new IOException("Original exception");
+} finally {
+    try {
+        // Cleanup that might throw
+        resource.close();
+    } catch (Exception e) {
+        logger.error("Cleanup failed", e);
+        // Don't rethrow
+    }
+}
+```
+
+**Interview Tip**:
+Never throw exceptions from finally blocks. Catch and log any exceptions that occur during cleanup.
+
+---
+
+## Related Topics
+
+- [I/O & NIO](../15-IO-NIO/01-IO-NIO.md) - try-with-resources for file operations
+- [JDBC](../16-JDBC/01-JDBC-Basics.md) - SQLException handling and connection management
+- [Multithreading & Concurrency](../08-Multithreading-Concurrency/01-Thread-Basics.md) - InterruptedException handling
+- [Java 8 Features - Optional](../06-Java-8-Features/03-Optional-CompletableFuture.md) - Alternative to exceptions for expected failures
+- [Best Practices](../10-SOLID-Principles/01-SOLID-Principles.md) - Exception handling in SOLID design
+
+---
+
+*Last Updated: February 2026*
+*Java Version: 8, 11, 17, 21*

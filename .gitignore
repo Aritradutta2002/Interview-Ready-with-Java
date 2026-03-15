@@ -1,4 +1,5 @@
 # IDE
+.kiro/
 .idea/
 .vscode/
 *.swp

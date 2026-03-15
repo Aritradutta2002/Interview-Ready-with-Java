@@ -418,3 +418,270 @@ A: Ratio (default 0.75) that triggers resize when size exceeds capacity × loadF
 
 **Q: What is the initial capacity of HashMap?**
 A: 16. Doubles on each resize. Always power of 2.
+
+
+---
+
+## Common Traps
+
+### ❌ Trap 1: Not Overriding equals() and hashCode() for Custom Keys
+
+**Why it's wrong**:
+HashMap uses hashCode() to find bucket and equals() to find key. If not overridden, object identity is used instead of logical equality.
+
+**Incorrect Code**:
+```java
+class Person {
+    String name;
+    int age;
+    
+    Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    // Missing equals() and hashCode()
+}
+
+Map<Person, String> map = new HashMap<>();
+Person p1 = new Person("John", 30);
+map.put(p1, "Engineer");
+
+Person p2 = new Person("John", 30);
+String job = map.get(p2);  // Returns null! Different object reference
+```
+
+**Correct Code**:
+```java
+class Person {
+    String name;
+    int age;
+    
+    Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return age == person.age && Objects.equals(name, person.name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+}
+
+Map<Person, String> map = new HashMap<>();
+Person p1 = new Person("John", 30);
+map.put(p1, "Engineer");
+
+Person p2 = new Person("John", 30);
+String job = map.get(p2);  // Returns "Engineer" ✅
+```
+
+**Interview Tip**:
+Always override both equals() and hashCode() together. If equals() returns true, hashCode() must return same value.
+
+---
+
+### ❌ Trap 2: Modifying Key After Insertion
+
+**Why it's wrong**:
+Changing a key's hashCode after insertion makes it impossible to find the entry.
+
+**Incorrect Code**:
+```java
+class MutableKey {
+    int value;
+    
+    MutableKey(int value) { this.value = value; }
+    
+    @Override
+    public int hashCode() { return value; }
+    
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof MutableKey && ((MutableKey) o).value == value;
+    }
+}
+
+Map<MutableKey, String> map = new HashMap<>();
+MutableKey key = new MutableKey(10);
+map.put(key, "Value");
+
+key.value = 20;  // ❌ Modifying key!
+String result = map.get(key);  // Returns null! Key is in wrong bucket
+```
+
+**Correct Code**:
+```java
+// Use immutable keys
+final class ImmutableKey {
+    private final int value;
+    
+    ImmutableKey(int value) { this.value = value; }
+    
+    public int getValue() { return value; }
+    
+    @Override
+    public int hashCode() { return value; }
+    
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof ImmutableKey && ((ImmutableKey) o).value == value;
+    }
+}
+
+Map<ImmutableKey, String> map = new HashMap<>();
+ImmutableKey key = new ImmutableKey(10);
+map.put(key, "Value");
+// key.value = 20;  // ✅ Compile error - immutable!
+```
+
+**Interview Tip**:
+Always use immutable objects as HashMap keys. String, Integer, and other wrapper classes are immutable and safe to use.
+
+---
+
+### ❌ Trap 3: ConcurrentModificationException During Iteration
+
+**Why it's wrong**:
+Modifying HashMap during iteration (except via iterator.remove()) throws ConcurrentModificationException.
+
+**Incorrect Code**:
+```java
+Map<String, Integer> map = new HashMap<>();
+map.put("A", 1);
+map.put("B", 2);
+map.put("C", 3);
+
+for (String key : map.keySet()) {
+    if (map.get(key) == 2) {
+        map.remove(key);  // ❌ ConcurrentModificationException!
+    }
+}
+```
+
+**Correct Code**:
+```java
+// Option 1: Use Iterator.remove()
+Map<String, Integer> map = new HashMap<>();
+map.put("A", 1);
+map.put("B", 2);
+map.put("C", 3);
+
+Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator();
+while (it.hasNext()) {
+    Map.Entry<String, Integer> entry = it.next();
+    if (entry.getValue() == 2) {
+        it.remove();  // ✅ Safe removal
+    }
+}
+
+// Option 2: Use removeIf (Java 8+)
+map.entrySet().removeIf(entry -> entry.getValue() == 2);
+
+// Option 3: Collect keys to remove, then remove
+Set<String> toRemove = new HashSet<>();
+for (Map.Entry<String, Integer> entry : map.entrySet()) {
+    if (entry.getValue() == 2) {
+        toRemove.add(entry.getKey());
+    }
+}
+toRemove.forEach(map::remove);
+```
+
+**Interview Tip**:
+Use Iterator.remove() or collect keys first. For concurrent access, use ConcurrentHashMap which has weakly consistent iterators.
+
+---
+
+### ❌ Trap 4: Using ConcurrentHashMap.size() for Synchronization Logic
+
+**Why it's wrong**:
+size() in ConcurrentHashMap is not atomic with other operations. Value may change immediately after reading.
+
+**Incorrect Code**:
+```java
+ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+
+// Thread 1
+if (map.size() < 10) {  // ❌ Race condition!
+    map.put("key", 1);  // Another thread might have added between check and put
+}
+```
+
+**Correct Code**:
+```java
+ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+
+// Use atomic operations
+map.computeIfAbsent("key", k -> {
+    if (map.size() < 10) {
+        return 1;
+    }
+    return null;  // Don't insert
+});
+
+// Or use explicit synchronization if complex logic needed
+synchronized (map) {
+    if (map.size() < 10) {
+        map.put("key", 1);
+    }
+}
+```
+
+**Interview Tip**:
+Use atomic operations like computeIfAbsent, putIfAbsent, merge instead of check-then-act patterns with ConcurrentHashMap.
+
+---
+
+### ❌ Trap 5: Assuming TreeMap Allows Null Keys
+
+**Why it's wrong**:
+TreeMap with natural ordering calls compareTo() on keys, which throws NullPointerException for null.
+
+**Incorrect Code**:
+```java
+TreeMap<String, Integer> map = new TreeMap<>();
+map.put("A", 1);
+map.put(null, 2);  // ❌ NullPointerException!
+```
+
+**Correct Code**:
+```java
+// Option 1: Use HashMap if null keys needed
+Map<String, Integer> map = new HashMap<>();
+map.put("A", 1);
+map.put(null, 2);  // ✅ Works
+
+// Option 2: Use custom Comparator that handles null
+TreeMap<String, Integer> map = new TreeMap<>(
+    Comparator.nullsFirst(Comparator.naturalOrder())
+);
+map.put("A", 1);
+map.put(null, 2);  // ✅ Works with custom comparator
+```
+
+**Interview Tip**:
+TreeMap doesn't allow null keys with natural ordering. Use HashMap for null keys or provide a null-safe Comparator.
+
+---
+
+## Related Topics
+
+- [Collections Framework - Lists](./01-List-Implementations.md) - ArrayList, LinkedList comparison
+- [Collections Framework - Sets & Queues](./03-Set-Queue-Utilities.md) - HashSet, TreeSet implementations
+- [Generics](../05-Generics/01-Generics.md) - Type safety in collections
+- [Multithreading & Concurrency](../08-Multithreading-Concurrency/01-Thread-Basics.md) - Thread-safe collections
+- [OOP - equals() and hashCode()](../01-Core-Java-OOP/08-OOP-equals-hashCode-toString.md) - Contract for HashMap keys
+- [Java 8 Features - Stream API](../06-Java-8-Features/02-Stream-API.md) - Functional operations on maps
+
+---
+
+*Last Updated: February 2026*
+*Java Version: 8, 11, 17, 21*
