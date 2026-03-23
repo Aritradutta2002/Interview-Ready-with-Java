@@ -1,0 +1,435 @@
+# Graph Interview Quick Reference
+
+## Table of Contents
+1. [When to Use What Algorithm](#when-to-use-what-algorithm)
+2. [Common Patterns](#common-patterns)
+3. [Problem-Solving Checklist](#problem-solving-checklist)
+4. [Time & Space Complexity Cheat Sheet](#time--space-complexity-cheat-sheet)
+5. [Top LeetCode Problems](#top-leetcode-problems)
+
+---
+
+## When to Use What Algorithm
+
+### Decision Tree
+
+```
+Is your graph directed or undirected?
+    │
+    ├─ UNDIRECTED
+    │   │
+    │   Is it a tree? (V vertices, V-1 edges, connected)
+    │   │   ├─ YES → Just BFS/DFS, no special algorithm needed
+    │   │   └─ NO → Continue below
+    │   │
+    │   Need shortest path with equal weights?
+    │   │   └─ YES → BFS from source
+    │   │
+    │   Need to check if graph is bipartite?
+    │   │   └─ YES → BFS/DFS with 2-coloring
+    │   │
+    │   Need Minimum Spanning Tree?
+    │   │   ├─ Kruskal's (sparse, edge-focused)
+    │   │   └─ Prim's (dense, vertex-focused)
+    │   │
+    │   Connectivity / Cycle detection?
+    │   │   └─ Union-Find (efficient for dynamic connectivity)
+    │   │
+    │   Need all pairs shortest path?
+    │   │   └─ Floyd-Warshall (small graphs, O(V³))
+    │   │
+    │   ❓ UNKNOWN COMPLEXITY ❓
+    │       └─ Probably BFS/DFS is the starting point
+    │
+    └─ DIRECTED
+        │
+        Need shortest path with positive weights?
+        │   └─ YES → Dijkstra's Algorithm
+        │
+        Has negative weights?
+        │   ├─ YES → Bellman-Ford (detect negative cycles)
+        │   └─ NO → Dijkstra
+        │
+        Has negative cycles?
+        │   └─ YES → Bellman-Ford (report cycle)
+        │
+        Need to process in topological order?
+        │   └─ YES → Topological Sort (Kahn's BFS or DFS)
+        │
+        Finding cycles?
+        │   └─ DFS with GRAY/BLACK coloring
+        │
+        Strongly Connected Components?
+        │   ├─ Kosaraju's (2-pass DFS)
+        │   └─ Tarjan's (1-pass DFS with low-link)
+        │
+        Need maximum flow?
+        │   └─ Ford-Fulkerson / Edmonds-Karp
+```
+
+---
+
+## Common Patterns
+
+### Pattern 1: Grid/Matrix Traversal
+
+```java
+// BFS on grid - shortest path, minimum steps
+int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+Queue<int[]> queue = new LinkedList<>();
+queue.offer(new int[]{row, col, steps});
+
+while (!queue.isEmpty()) {
+    int[] curr = queue.poll();
+    for (int[] dir : dirs) {
+        int nr = curr[0] + dir[0];
+        int nc = curr[1] + dir[1];
+        if (valid(nr, nc) && !visited[nr][nc]) {
+            queue.offer(new int[]{nr, nc, curr[2] + 1});
+        }
+    }
+}
+```
+
+### Pattern 2: Cycle Detection
+
+```java
+// Directed graph - DFS with coloring
+String[] color = new String[V];  // WHITE, GRAY, BLACK
+
+boolean dfs(int v) {
+    color[v] = "GRAY";
+    for (int u : adjList.get(v)) {
+        if (color[u].equals("GRAY")) return true;  // Back edge = cycle
+        if (color[u].equals("WHITE") && dfs(u)) return true;
+    }
+    color[v] = "BLACK";
+    return false;
+}
+
+// Undirected graph - DFS tracking parent
+boolean hasCycle(int v, int parent) {
+    visited[v] = true;
+    for (int u : adjList.get(v)) {
+        if (!visited[u]) {
+            if (hasCycle(u, v)) return true;
+        } else if (u != parent) {
+            return true;  // Visited neighbor that's not parent = cycle
+        }
+    }
+    return false;
+}
+```
+
+### Pattern 3: Topological Sort
+
+```java
+// Kahn's Algorithm (BFS)
+int[] indegree = new int[V];
+for (int u = 0; u < V; u++) {
+    for (int v : adjList.get(u)) {
+        indegree[v]++;
+    }
+}
+
+Queue<Integer> q = new LinkedList<>();
+for (int i = 0; i < V; i++) {
+    if (indegree[i] == 0) q.offer(i);
+}
+
+List<Integer> result = new ArrayList<>();
+while (!q.isEmpty()) {
+    int u = q.poll();
+    result.add(u);
+    for (int v : adjList.get(u)) {
+        if (--indegree[v] == 0) q.offer(v);
+    }
+}
+if (result.size() != V) return empty;  // Cycle exists!
+```
+
+### Pattern 4: Bipartite Check
+
+```java
+// 2-coloring with BFS
+int[] color = new int[V];  // -1 = uncolored, 0, 1 = colors
+
+for (int i = 0; i < V; i++) {
+    if (color[i] == -1) {
+        color[i] = 0;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(i);
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            for (int v : adjList.get(u)) {
+                if (color[v] == -1) {
+                    color[v] = 1 - color[u];
+                    q.offer(v);
+                } else if (color[v] == color[u]) {
+                    return false;  // Not bipartite!
+                }
+            }
+        }
+    }
+}
+return true;
+```
+
+### Pattern 5: Dijkstra's Shortest Path
+
+```java
+int[] dist = new int[V];
+Arrays.fill(dist, INF);
+dist[source] = 0;
+
+PriorityQueue<int[]> pq = new PriorityQueue<>(
+    Comparator.comparingInt(a -> a[1])
+);
+pq.offer(new int[]{source, 0});
+
+while (!pq.isEmpty()) {
+    int[] curr = pq.poll();
+    int u = curr[0], d = curr[1];
+    if (d > dist[u]) continue;
+
+    for (Edge e : adjList.get(u)) {
+        int v = e.destination;
+        int nd = dist[u] + e.weight;
+        if (nd < dist[v]) {
+            dist[v] = nd;
+            pq.offer(new int[]{v, nd});
+        }
+    }
+}
+```
+
+### Pattern 6: Union-Find for Cycle Detection
+
+```java
+UnionFind uf = new UnionFind(V);
+for (int[] edge : edges) {
+    if (uf.find(edge[0]) == uf.find(edge[1])) {
+        return edge;  // Cycle detected!
+    }
+    uf.union(edge[0], edge[1]);
+}
+
+// Union-Find with path compression and rank
+int find(int x) {
+    if (parent[x] != x) parent[x] = find(parent[x]);
+    return parent[x];
+}
+
+void union(int x, int y) {
+    int rx = find(x), ry = find(y);
+    if (rx == ry) return;
+    if (rank[rx] < rank[ry]) parent[rx] = ry;
+    else if (rank[rx] > rank[ry]) parent[ry] = rx;
+    else { parent[ry] = rx; rank[rx]++; }
+}
+```
+
+---
+
+## Problem-Solving Checklist
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                  GRAPH PROBLEM CHECKLIST                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  BEFORE YOU CODE:                                               │
+│  □ Is the graph directed or undirected?                        │
+│  □ Is the graph weighted or unweighted?                         │
+│  □ What am I being asked to find?                              │
+│     - Shortest path? (BFS/Dijkstra/Bellman-Ford)              │
+│     - Path exists? (DFS/BFS)                                  │
+│     - Cycle? (DFS with coloring)                               │
+│     - Topological order? (Kahn's/DFS)                          │
+│     - Connected components? (BFS/DFS/Union-Find)               │
+│     - MST? (Kruskal's/Prim's)                                 │
+│     - All pairs? (Floyd-Warshall)                             │
+│                                                                  │
+│  EDGE CASES:                                                   │
+│  □ Empty graph                                                  │
+│  □ Single vertex                                               │
+│  □ Disconnected components                                      │
+│  □ Graph with cycles vs acyclic                                 │
+│  □ Self-loops and parallel edges                               │
+│                                                                  │
+│  COMPLEXITY:                                                   │
+│  □ V = number of vertices                                      │
+│  □ E = number of edges                                          │
+│  □ Choose representation: Adjacency List vs Matrix              │
+│     - Sparse (E << V²): List                                  │
+│     - Dense (E ≈ V²): Matrix                                  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Time & Space Complexity Cheat Sheet
+
+### Representations
+
+| Representation | Space | Add Edge | Remove Edge | Query Edge | Get neighbors |
+|---------------|-------|----------|-------------|-----------|--------------|
+| Adjacency List | O(V + E) | O(1) | O(E) | O(E) | O(degree) |
+| Adjacency Matrix | O(V²) | O(1) | O(1) | O(1) | O(V) |
+| Edge List | O(E) | O(1) | O(1) | O(E) | O(E) |
+
+### Algorithms
+
+| Algorithm | Time | Space | Use Case |
+|-----------|------|-------|----------|
+| **BFS** | O(V + E) | O(V) | Shortest path (unweighted), level order |
+| **DFS** | O(V + E) | O(V) | Path finding, cycle detection, topological sort |
+| **Dijkstra** | O((V+E) log V) | O(V) | Shortest path (positive weights) |
+| **Bellman-Ford** | O(V × E) | O(V) | Shortest path (any weights, negative) |
+| **Floyd-Warshall** | O(V³) | O(V²) | All pairs shortest path |
+| **Kahn's (Topo)** | O(V + E) | O(V) | Topological sort (BFS) |
+| **DFS Topo** | O(V + E) | O(V) | Topological sort (DFS) |
+| **Kosaraju SCC** | O(V + E) | O(V + E) | Strongly connected components |
+| **Tarjan SCC** | O(V + E) | O(V) | Strongly connected components |
+| **Kruskal MST** | O(E log E) | O(V) | Minimum spanning tree |
+| **Prim's MST** | O((V+E) log V) | O(V) | Minimum spanning tree |
+| **Union-Find** | O(α(N)) | O(N) | Connectivity, cycle detection |
+| **A*** | O(E) | O(V) | Best-first pathfinding |
+
+---
+
+## Top LeetCode Problems
+
+### Must-Know (Easy)
+1. **Number of Islands** (200) - BFS/DFS
+2. **Clone Graph** (133) - BFS/DFS
+3. **Max Depth of Binary Tree** (104) - BFS/DFS
+4. **Is Graph Bipartite?** (785) - BFS 2-coloring
+5. **Find if Path Exists in Graph** - DFS/BFS
+
+### Important (Medium)
+1. **Course Schedule** (207) - Topological Sort
+2. **Course Schedule II** (210) - Topological Sort + path
+3. **Number of Islands II** (305) - Union-Find
+4. **Pacific Atlantic Water Flow** (417) - BFS from edges
+5. **Rotting Oranges** (994) - Multi-source BFS
+6. **Shortest Path in Binary Matrix** (1293) - BFS
+7. **Network Delay Time** (743) - Dijkstra
+8. **Cheapest Flights Within K Stops** (787) - Modified Dijkstra/Bellman-Ford
+9. **Redundant Connection** (684) - Union-Find cycle detection
+10. **Critical Connections in Network** (1192) - Tarjan's SCC
+
+### Advanced (Hard)
+1. **Number of Ways to Reorder Array** - Graph + combinatorics
+2. **Swim in Rising Water** (778) - Dijkstra + binary search
+3. **Find Shortest Path Visiting All Nodes** (847) - Bitmask + BFS
+4. **Alien Dictionary** (269) - Topological Sort
+5. **Parallel Courses III** (2050) - Topological sort with DP
+
+---
+
+## Quick Code Templates
+
+### BFS Template
+```java
+public void bfs(int start) {
+    boolean[] visited = new boolean[V];
+    Queue<Integer> q = new LinkedList<>();
+    q.offer(start);
+    visited[start] = true;
+
+    while (!q.isEmpty()) {
+        int v = q.poll();
+        // Process v
+        for (int u : adjList.get(v)) {
+            if (!visited[u]) {
+                visited[u] = true;
+                q.offer(u);
+            }
+        }
+    }
+}
+```
+
+### DFS Template
+```java
+public void dfs(int v, boolean[] visited) {
+    visited[v] = true;
+    // Process v
+    for (int u : adjList.get(v)) {
+        if (!visited[u]) {
+            dfs(u, visited);
+        }
+    }
+}
+```
+
+### Dijkstra Template
+```java
+public int[] dijkstra(int src) {
+    int[] dist = new int[V];
+    Arrays.fill(dist, INF);
+    dist[src] = 0;
+    PriorityQueue<int[]> pq = new PriorityQueue<>(
+        Comparator.comparingInt(a -> a[1])
+    );
+    pq.offer(new int[]{src, 0});
+
+    while (!pq.isEmpty()) {
+        int[] curr = pq.poll();
+        int v = curr[0], d = curr[1];
+        if (d > dist[v]) continue;
+        for (Edge e : adjList.get(v)) {
+            int nd = dist[v] + e.weight;
+            if (nd < dist[e.to]) {
+                dist[e.to] = nd;
+                pq.offer(new int[]{e.to, nd});
+            }
+        }
+    }
+    return dist;
+}
+```
+
+---
+
+## Summary
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              GRAPH INTERVIEW QUICK REFERENCE                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  SHORTEST PATH:                                                 │
+│  - Unweighted: BFS                                              │
+│  - Positive weights: Dijkstra                                   │
+│  - Any weights: Bellman-Ford                                    │
+│  - All pairs: Floyd-Warshall                                   │
+│  - Heuristic-guided: A*                                        │
+│                                                                  │
+│  CONNECTIVITY:                                                  │
+│  - Path exists: BFS/DFS                                         │
+│  - Connected components: BFS/DFS from unvisited                  │
+│  - Cycle detection: DFS coloring (directed) or Union-Find      │
+│  - Strongly connected: Kosaraju/Tarjan                          │
+│                                                                  │
+│  TOPOLOGICAL:                                                   │
+│  - Kahn's (BFS with indegree)                                  │
+│  - DFS with stack (post-order)                                 │
+│                                                                  │
+│  SPECIAL:                                                       │
+│  - MST: Kruskal's (Union-Find) or Prim's (Priority Queue)     │
+│  - Max flow: Ford-Fulkerson / Edmonds-Karp                     │
+│  - Bipartite: 2-coloring with BFS                             │
+│                                                                  │
+│  KEY INSIGHT: Choose based on graph type, weight type,         │
+│  and what's being asked!                                         │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+> **Remember**: When stuck on a graph problem, default to BFS or DFS! Most graph problems can be solved with these two. Then consider specialized algorithms based on what you're optimizing for.
