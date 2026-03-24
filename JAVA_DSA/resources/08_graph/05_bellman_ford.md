@@ -1,5 +1,12 @@
 # Bellman-Ford Algorithm - Complete Guide
 
+## Prerequisites & Related Topics
+
+- **Prerequisite**: [04_dijkstra.md](04_dijkstra.md) (understand basic shortest path concept)
+- **When to Use Over Dijkstra**: Graphs with **negative edge weights** or when you need **negative cycle detection**
+- **Optimization**: SPFA (Shortest Path Faster Algorithm) - uses queue instead of O(VE) iteration
+- **Related**: [10_floyd_warshall.md](10_floyd_warshall.md) (all-pairs with negative weights)
+
 ## Table of Contents
 1. [What is Bellman-Ford?](#what-is-bellman-ford)
 2. [Why Bellman-Ford?](#why-bellman-ford)
@@ -253,11 +260,13 @@ public class BellmanFord {
         return dist;
     }
 
-    public boolean hasNegativeCycle() {
+    // CORRECTED: hasNegativeCycle() needs dist[] array as parameter
+    // (The original implementation tried to use 'dist' which is not a class field)
+    public boolean hasNegativeCycle(int[] dist) {
         for (Edge edge : edges) {
             if (dist[edge.source] != Integer.MAX_VALUE &&
                 dist[edge.source] + edge.weight < dist[edge.destination]) {
-                return true;
+                return true;  // Negative cycle found
             }
         }
         return false;

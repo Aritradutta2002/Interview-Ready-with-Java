@@ -15,6 +15,22 @@
 
 **Topological Sort** arranges vertices of a **DAG (Directed Acyclic Graph)** in a linear order such that for every directed edge **u → v**, **u comes before v** in the ordering.
 
+### 🎯 CRITICAL: Edge Direction Convention
+
+```
+CONVENTION:        Edge u → v means:  "u MUST COMPLETE BEFORE v"
+                                 OR:  "v DEPENDS ON u"
+                                 OR:  "u is prerequisite for v"
+
+COURSE EXAMPLE:    Edge 0 → 1  =  "Take course 0, then course 1"
+                   Result: [0, 1, ...] ← 0 comes before 1
+
+BUILD EXAMPLE:     Edge main.o → app  =  "Compile main.o before app"
+                   Result: [main.o, app, ...] ← main.o comes first
+
+⚠️ REVERSING THIS DIRECTION PRODUCES WRONG ORDERING!
+```
+
 ### Key Characteristics
 
 ```
@@ -181,12 +197,20 @@ public class TopologicalSortKahn {
     }
 
     public static void main(String[] args) {
-        // Course Schedule Example
+        // Edge u → v means: u MUST COMPLETE BEFORE v
+        // 
+        // Course Schedule:
+        // - Course 0 → Course 1: Take 0 before 1
+        // - Course 0 → Course 2: Take 0 before 2
+        // - Course 1 → Course 3: Take 1 before 3
+        // - Course 2 → Course 3: Take 2 before 3
+        // Result should be: [0, 1, 2, 3] or [0, 2, 1, 3]
+        
         TopologicalSortKahn courses = new TopologicalSortKahn(4);
-        courses.addEdge(1, 0);  // Course 1 requires Course 0
-        courses.addEdge(2, 0);  // Course 2 requires Course 0
-        courses.addEdge(3, 1);  // Course 3 requires Course 1
-        courses.addEdge(3, 2);  // Course 3 requires Course 2
+        courses.addEdge(0, 1);  // 0 → 1: Course 0 prerequisite for Course 1
+        courses.addEdge(0, 2);  // 0 → 2: Course 0 prerequisite for Course 2
+        courses.addEdge(1, 3);  // 1 → 3: Course 1 prerequisite for Course 3
+        courses.addEdge(2, 3);  // 2 → 3: Course 2 prerequisite for Course 3
 
         List<Integer> order = courses.topologicalSort();
         System.out.println("Course order: " + order);

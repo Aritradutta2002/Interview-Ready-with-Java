@@ -1,5 +1,14 @@
 # Minimum Spanning Tree (MST) - Complete Guide
 
+## Prerequisites & Related Topics
+
+- **Data Structure**: [07_union_find.md](07_union_find.md) (Kruskal's algorithm uses Union-Find)
+- **Graph Foundation**: [01_theory.md](01_theory.md) (weighted graphs, connectivity)
+- **Algorithms Covered**: 
+  - Kruskal's (greedy + Union-Find)  
+  - Prim's (greedy + priority queue)
+- **Related**: [10_floyd_warshall.md](10_floyd_warshall.md) (all-pairs path), [13_max_flow_min_cut.md](13_max_flow_min_cut.md) (min-cut theorem)
+
 ## Table of Contents
 1. [What is MST?](#what-is-mst)
 2. [Key Properties](#key-properties)

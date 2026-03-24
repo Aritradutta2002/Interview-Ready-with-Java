@@ -1745,6 +1745,151 @@ private boolean dfsPath(int[][] maze, int row, int col,
 
 ---
 
+## When to Use DFS (vs BFS or Other Algorithms)
+
+| Scenario | Use DFS? | Why |
+|----------|----------|-----|
+| **Cycle detection** | ✅ YES | Back edges (GRAY→GRAY) indicate cycles |
+| **Topological sort** | ✅ YES | Post-order gives topological order |
+| **Strongly connected components** | ✅ YES | Kosaraju/Tarjan use DFS |
+| **Shortest path (unweighted)** | ❌ NO | Use [BFS](02_bfs.md) instead |
+| **Shortest path (weighted)** | ❌ NO | Use [Dijkstra](04_dijkstra.md) |
+| **All paths in graph** | ✅ YES | DFS naturally explores all paths |
+| **Maze/puzzle solving** | ✅ YES | Backtracking with DFS |
+| **Connected components** | ✅ YES | Works well but BFS often simpler |
+
+## Common Mistakes & How to Avoid Them
+
+```java
+❌ MISTAKE 1: Marking visited AFTER exploring all children
+Problem: Same vertex visited multiple times
+        Recursive call stack grows infinitely
+        
+✅ CORRECT:
+void dfs(int u, boolean[] visited) {
+    visited[u] = true;  // Mark IMMEDIATELY upon entry
+    for (int v : neighbors[u]) {
+        if (!visited[v]) {
+            dfs(v, visited);
+        }
+    }
+}
+
+❌ MISTAKE 2: Forgetting to check GRAY nodes for cycle detection
+Problem: Cycle not detected
+        GRAY means "currently in recursion stack"
+        If you encounter GRAY → you're back to ancestor = cycle!
+
+✅ CORRECT with coloring:
+int[] color = new int[n];  // WHITE=0, GRAY=1, BLACK=2
+boolean dfs(int u) {
+    color[u] = 1;  // GRAY - in current recursion path
+    for (int v : neighbors[u]) {
+        if (color[v] == 1) return true;  // Back edge = cycle!
+        if (color[v] == 0 && dfs(v)) return true;
+    }
+    color[u] = 2;  // BLACK - finished
+    return false;
+}
+
+❌ MISTAKE 3: Stack overflow with recursion on deep graphs
+Problem: Graph with 1000 vertices in a chain causes stack overflow
+        Recursion depth = 1000 = default stack limit exceeded
+
+✅ CORRECT: Use iterative DFS with explicit stack
+Stack<Integer> stack = new Stack<>();
+stack.push(start);
+boolean[] visited = new boolean[n];
+
+while (!stack.isEmpty()) {
+    int u = stack.pop();
+    if (!visited[u]) {
+        visited[u] = true;
+        for (int v : neighbors[u]) {
+            if (!visited[v]) stack.push(v);
+        }
+    }
+}
+
+❌ MISTAKE 4: Confusing pre-order vs post-order
+Problem: Topological sort using pre-order gives REVERSE order
+        Pre-order: visit node BEFORE children
+        Post-order: visit node AFTER children (needed for topo)
+
+✅ CORRECT:
+Stack<Integer> result = new Stack<>();
+void dfs(int u, boolean[] visited) {
+    visited[u] = true;
+    for (int v : neighbors[u]) {
+        if (!visited[v]) dfs(v, visited);
+    }
+    result.push(u);  // Push AFTER exploring all children (post-order)
+}
+```
+
+## Edge Cases to Handle
+
+```java
+// Self-loop: Node with edge to itself
+void dfs(0) → marks 0 as visited
+  neighbor: 0 (but already visited) → skip
+// Works correctly; self-loop doesn't cause infinite recursion
+
+// Disconnected graph: Some vertices unreachable from start
+Graph: 0→1, 2→3 (component 1: {0,1}, component 2: {2,3})
+dfs(0) reaches [0,1], misses [2,3]
+// Solution: Call dfs() from each unvisited vertex
+
+// Dense graph: Many edges between same vertices
+addEdge(0,1) called 5 times
+// Both stored in list, but visited[] prevents reprocessing
+// Result: Works correctly, 1 visited only once
+
+// Cycle in undirected graph
+Edge 0-1-0 forms cycle
+dfs(0) → visit 0
+  neighbor 1 → not visited → dfs(1)
+    neighbor 0 → VISITED → skip (no cycle flag for undirected!)
+// Undirected: Just check if already visited (back to parent)
+// Note: In directed graphs, need 3-color scheme to detect cycles
+
+// Single vertex, no edges
+Graph(1), dfs(0)
+// Just marks that vertex as visited, no recursion
+// Result: Correct
+```
+
+---
+
+## Recursive vs Iterative DFS
+
+```java
+// RECURSIVE: Cleaner code, but risk of stack overflow on deep graphs
+void recursiveDFS(int u, boolean[] visited) {
+    visited[u] = true;
+    for (int v : neighbors[u]) {
+        if (!visited[v]) recursiveDFS(v, visited);
+    }
+}
+
+// ITERATIVE: Safer for deep graphs, but slightly more code
+void iterativeDFS(int start, boolean[] visited) {
+    Stack<Integer> stack = new Stack<>();
+    stack.push(start);
+    while (!stack.isEmpty()) {
+        int u = stack.pop();
+        if (visited[u]) continue;
+        visited[u] = true;
+        for (int v : neighbors[u]) {
+            if (!visited[v]) stack.push(v);
+        }
+    }
+}
+// Both are O(V+E), choose based on graph depth and your comfort
+```
+
+---
+
 ## Summary
 
 ```

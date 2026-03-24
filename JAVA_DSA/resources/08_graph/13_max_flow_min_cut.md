@@ -4,9 +4,10 @@
 1. [Flow Networks](#flow-networks)
 2. [Ford-Fulkerson Method](#ford-fulkerson-method)
 3. [Edmonds-Karp Algorithm](#edmonds-karp-algorithm)
-4. [Dinic's Algorithm](#dinics-algorithm)
+4. [Dinic's Algorithm](#dinics-algorithm-level-graph-optimization)
 5. [Min Cut Theorem](#min-cut-theorem)
-6. [Practice Problems](#practice-problems)
+6. [Applications: Bipartite Matching & More](#applications-bipartite-matching--more)
+7. [Practice Problems](#practice-problems)
 
 ---
 
@@ -272,7 +273,171 @@ public class EdmondsKarp {
 
 ---
 
-## Min Cut Theorem
+## Dinic's Algorithm - Level Graph Optimization
+
+### Why Dinic's? (Faster than Edmonds-Karp)
+
+- **Edmonds-Karp**: O(V·E²) - finds augmenting path each iteration
+- **Dinic's**: O(V²·E) - uses level graph to batch find paths
+
+### Key Optimization: Level Graph
+
+```
+Level Graph ranks vertices by distance from source:
+Level 0: Source
+Level 1: Vertices reachable in 1 step
+Level 2: Vertices reachable in 2 steps
+...
+
+Dinic's only uses forward edges in level graph
+(edges that go from level i to level i+1)
+This ensures we find SHORTEST augmenting paths efficiently
+```
+
+### Java Implementation
+
+```java
+package dsa.graph.flow;
+
+import java.util.*;
+
+public class Dinics {
+    private int n;
+    private List<Edge>[] graph;
+    private int[] level, iter;
+    
+    static class Edge {
+        int to, rev;
+        long cap;
+        Edge(int to, long cap, int rev) {
+            this.to = to;
+            this.cap = cap;
+            this.rev = rev;
+        }
+    }
+    
+    public Dinics(int vertices) {
+        this.n = vertices;
+        this.graph = new ArrayList[vertices];
+        this.level = new int[vertices];
+        this.iter = new int[vertices];
+        for (int i = 0; i < vertices; i++) {
+            graph[i] = new ArrayList<>();
+        }
+    }
+    
+    public void addEdge(int from, int to, long capacity) {
+        graph[from].add(new Edge(to, capacity, graph[to].size()));
+        graph[to].add(new Edge(from, 0, graph[from].size() - 1));
+    }
+    
+    private boolean bfs(int source, int sink) {
+        Arrays.fill(level, -1);
+        level[source] = 0;
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(source);
+        
+        while (!queue.isEmpty()) {
+            int v = queue.poll();
+            for (Edge e : graph[v]) {
+                if (level[e.to] < 0 && e.cap > 0) {
+                    level[e.to] = level[v] + 1;
+                    queue.offer(e.to);
+                }
+            }
+        }
+        
+        return level[sink] >= 0;
+    }
+    
+    private long dfs(int v, int sink, long pushed) {
+        if (v == sink || pushed == 0) return pushed;
+        
+        for (int& i = iter[v]; i < graph[v].size(); i++) {
+            Edge e = graph[v].get(i);
+            if (level[v] + 1 != level[e.to] || e.cap <= 0) continue;
+            
+            long tr = dfs(e.to, sink, Math.min(pushed, e.cap));
+            if (tr > 0) {
+                e.cap -= tr;
+                graph[e.to].get(e.rev).cap += tr;
+                return tr;
+            }
+        }
+        
+        return 0;
+    }
+    
+    public long maxFlow(int source, int sink) {
+        long flow = 0;
+        
+        while (bfs(source, sink)) {
+            Arrays.fill(iter, 0);
+            long pushed;
+            while ((pushed = dfs(source, sink, Long.MAX_VALUE)) > 0) {
+                flow += pushed;
+            }
+        }
+        
+        return flow;
+    }
+    
+    public static void main(String[] args) {
+        Dinics dinics = new Dinics(6);
+        dinics.addEdge(0, 1, 16);
+        dinics.addEdge(0, 2, 13);
+        dinics.addEdge(1, 2, 10);
+        dinics.addEdge(1, 3, 12);
+        dinics.addEdge(2, 1, 4);
+        dinics.addEdge(2, 4, 14);
+        dinics.addEdge(3, 2, 9);
+        dinics.addEdge(3, 5, 20);
+        dinics.addEdge(4, 3, 7);
+        dinics.addEdge(4, 5, 4);
+
+        System.out.println("Maximum Flow (Dinic's): " + dinics.maxFlow(0, 5));
+        // Expected: 23
+    }
+}
+```
+
+### Complexity: O(V²·E) (Better than Edmonds-Karp!)
+
+---
+
+## Applications: Bipartite Matching & More
+
+### Maximum Bipartite Matching via Max Flow
+
+**Problem**: Given bipartite graph, find maximum matching (largest set of non-overlapping edges).
+
+**Solution**: Convert to max-flow:
+```
+1. Add source → all vertices in SET-A (capacity 1)
+2. Add edges within bipartite (capacity 1)
+3. Add all vertices in SET-B → sink (capacity 1)
+4. Run max flow: result = maximum matching size
+```
+
+### Min-Cost Max-Flow (Assignment Problem)
+
+**Problem**: Assign workers to jobs minimizing total cost. Each worker does ≤1 job, each job done by ≤1 worker.
+
+**Solution**: 
+- Use max-flow with edge costs
+- Find flow that achieves max flow with minimum total cost
+- Often requires cycle canceling or successive shortest paths algorithm
+
+### Image Segmentation (Graph Cut)
+
+**Problem**: Partition image pixels into foreground/background with minimum edge cuts.
+
+**Solution**: 
+- Model as min-cut problem
+- Use max-flow min-cut theorem
+- Vertices = pixels, edges = adjacency + unary costs
+
+---
 
 ### What is Min Cut?
 

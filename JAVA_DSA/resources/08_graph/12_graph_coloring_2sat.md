@@ -3,8 +3,43 @@
 ## Table of Contents
 1. [Graph Coloring](#graph-coloring)
 2. [Bipartite Graph Check](#bipartite-graph-check)
-3. [2-SAT Problem](#2-sat-problem)
-4. [Practice Problems](#practice-problems)
+3. [Maximum Bipartite Matching](#maximum-bipartite-matching)
+4. [2-SAT Problem](#2-sat-problem)
+5. [Practice Problems](#practice-problems)
+
+---
+
+## Maximum Bipartite Matching
+
+**Maximum Matching** finds the largest set of edges where no two edges share a vertex (in a bipartite graph).
+
+### Applications
+- Job assignment (workers → jobs)
+- Dating app (users → matches)
+- Server allocation (tasks → servers)
+- Hall's theorem verification
+
+### Solution via Max Flow
+
+Convert bipartite matching to max-flow problem:
+1. Create source connected to SET-A (weight 1)
+2. Connect SET-B to sink (weight 1)
+3. Connect matched pairs (weight 1)
+4. Run max-flow: flow value = maximum matching size
+
+```java
+// Simplified: Use Max Flow algorithm with capacity 1 everywhere
+// See [13_max_flow_min_cut.md](13_max_flow_min_cut.md) for implementation
+// Time: O(V·E²) with Ford-Fulkerson or O(E log V) with Dinic's
+```
+
+### Complexity
+
+| Algorithm | Time | Notes |
+|-----------|------|-------|
+| Ford-Fulkerson | O(V·E²) | Simpler, slower |
+| Dinic's Algorithm | O(V²·E) | Optimized |
+| Hopcroft-Karp | O(E√V) | Fastest, complex |
 
 ---
 

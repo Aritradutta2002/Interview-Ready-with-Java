@@ -1,5 +1,12 @@
 # Dijkstra's Algorithm - Complete Guide
 
+## Prerequisites & Related Topics
+
+- **Recommended Prior Study**: [02_bfs.md](02_bfs.md) (BFS for unweighted graphs)
+- **Next Topic**: [05_bellman_ford.md](05_bellman_ford.md) (Dijkstra with negative weights)
+- **Advanced Variant**: [14_astar_search.md](14_astar_search.md) (Dijkstra + heuristic)
+- **All-Pairs Shortest Path**: [10_floyd_warshall.md](10_floyd_warshall.md) (when you need all pairs, not just single source)
+
 ## Table of Contents
 1. [What is Dijkstra's Algorithm?](#what-is-dijkstras-algorithm)
 2. [How Dijkstra's Works](#how-dijkstras-works)
@@ -759,6 +766,133 @@ public class NegativeCycleDetection {
 1. **Minimum Cost to Reach Destination** (Flight scheduling)
 2. **Find Shortest Path with Obstacles** (Grid with weights)
 3. **Reachable Nodes in Subdivided Graph** (LeetCode 882)
+
+---
+
+## When to Use Dijkstra (vs Other Shortest Path Algorithms)
+
+| Scenario | Use Dijkstra? | Alternative |
+|----------|---------------|-------------|
+| **Shortest path, non-negative weights** | ✅ YES | Best choice |
+| **Negative edge weights** | ❌ NO | Use [Bellman-Ford](05_bellman_ford.md) |
+| **Need all-pairs shortest path** | ❌ NO | Use [Floyd-Warshall](10_floyd_warshall.md) |
+| **Unweighted graph** | ❌ NO | Use [BFS](02_bfs.md) (faster, simpler) |
+| **With heuristic guidance** | ✅ YES | Use [A* Search](14_astar_search.md) (optimized) |
+| **Dense graph (E ≈ V²)** | ✅ YES | O(V² + E log V) acceptable |
+| **Sparse graph (E << V²)** | ✅ YES | Use Fibonacci heap to optimize |
+
+## Common Mistakes & How to Avoid Them
+
+```java
+❌ MISTAKE 1: Using Dijkstra with NEGATIVE edge weights
+Problem: Algorithm might skip valid shorter paths through negative edges
+        Example: Path A→B (cost 10) vs A→X→B (cost 1 + (-8) = -7)
+        Dijkstra might pick A→B first, miss better A→X→B
+
+✅ CORRECT: Check for negative weights first
+if (hasNegativeWeights(graph)) {
+    useBellmanFord();  // Or Floyd-Warshall for all-pairs
+} else {
+    useDijkstra();
+}
+
+❌ MISTAKE 2: Not handling unreachable vertices (Integer.MAX_VALUE)
+Problem: dist[u] + weight overflows if dist[u] = MAX_VALUE
+        Example: dist[u] = Integer.MAX_VALUE
+        dist[u] + 5 = Integer.MAX_VALUE + 5 = OVERFLOW (wraps negative!)
+
+✅ CORRECT:
+if (dist[u] != Integer.MAX_VALUE && 
+    dist[u] + weight < dist[v]) {
+    dist[v] = dist[u] + weight;
+}
+
+❌ MISTAKE 3: Visiting a vertex twice (stale entries in PQ)
+Problem: Same vertex inserted in priority queue multiple times
+        When popped first time: process it
+        When popped second time: already processed, but old distance
+        
+✅ CORRECT: Check if already processed
+PriorityQueue<Pair<Integer, Integer>> pq = ...;
+boolean[] processed = new boolean[n];
+
+while (!pq.isEmpty()) {
+    var (dist, u) = pq.poll();
+    if (processed[u]) continue;  // Skip stale entries
+    processed[u] = true;
+    for (Edge e : neighbors[u]) {
+        if (dist[u] + e.weight < dist[e.dest]) {
+            dist[e.dest] = dist[u] + e.weight;
+            pq.offer(new Pair<>(dist[e.dest], e.dest));
+        }
+    }
+}
+
+❌ MISTAKE 4: Wrong priority queue ordering
+Problem: Min-heap not working; processing farthest nodes first
+        PQ: [5, 3, 7, 1] → should pop 1, but popped 7?
+
+✅ CORRECT: Verify min-heap
+PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>(
+    (a, b) -> Integer.compare(a.first, b.first)  // Distance first
+);
+```
+
+## Edge Cases to Handle
+
+```java
+// Single vertex
+Graph(1), dijkstra(0)
+// Result: dist[0] = 0, no neighbors to process
+// Correct
+
+// Source unreachable to some vertices
+Graph: 0→1, disconnected vertex 2
+dijkstra(0)
+// Result: dist[0]=0, dist[1]=finite, dist[2]=MAX_VALUE
+// Correct handling needed in output
+
+// All vertices same distance from source
+Graph: complete graph, all edges weight 1
+dijkstra(0)
+// Result: dist[v] = 1 for all v
+// Correct
+
+// Vertex with no outgoing edges
+Graph: 0→1, 1 has no neighbors
+dijkstra(0)
+// Result: dist[0]=0, dist[1]=weight(0,1), terminates
+// Correct
+
+// Large weights causing overflow
+Graph: edge weights = 10^8, path length = 100
+1000000000 * 100 = 100000000000 = overflow
+✅ Use long instead of int for distances
+long[] dist = new long[n];
+Arrays.fill(dist, Long.MAX_VALUE);
+```
+
+---
+
+## Dijkstra vs Bellman-Ford Decision Tree
+
+```
+┌─ Do you need all-pairs shortest path?
+│  ├─ YES → Use Floyd-Warshall
+│  └─ NO → Continue
+│
+├─ Does your graph have NEGATIVE edge weights?
+│  ├─ YES → Use Bellman-Ford
+│  └─ NO (all non-negative) → Continue
+│
+├─ Do you have a HEURISTIC (like A* with coordinates)?
+│  ├─ YES → Use A* Search
+│  └─ NO (blind search) → Continue
+│
+└─ Is graph UNWEIGHTED (all edges = 1)?
+   ├─ YES → Use BFS (simpler, faster)
+   └─ NO → Use Dijkstra ✓
+```
 
 ---
 

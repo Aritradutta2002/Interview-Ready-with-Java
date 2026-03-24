@@ -2,10 +2,11 @@
 
 ## Table of Contents
 1. [Eulerian Paths and Circuits](#eulerian-paths-and-circuits)
-2. [Fleury's Algorithm](#fleury's-algorithm)
+2. [Fleury's Algorithm](#fleurys-algorithm)
 3. [Hamiltonian Paths and Cycles](#hamiltonian-paths-and-cycles)
-4. [NP-Completeness](#np-completeness)
-5. [Practice Problems](#practice-problems)
+4. [Traveling Salesman Problem (TSP)](#traveling-salesman-problem-tsp)
+5. [NP-Completeness](#np-completeness)
+6. [Practice Problems](#practice-problems)
 
 ---
 
@@ -269,6 +270,99 @@ public class HamiltonianPath {
 
         System.out.println("Hamiltonian Cycle: " + graph.findHC());
         System.out.println("Hamiltonian Path: " + graph.findHP());
+    }
+}
+```
+
+---
+
+## Traveling Salesman Problem (TSP)
+
+### What is TSP?
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              TRAVELING SALESMAN PROBLEM (TSP)                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  Given a list of cities and the distances between each pair:    │
+│  "What is the shortest possible route that visits each city      │
+│  exactly once and returns to the origin city?"                   │
+│                                                                  │
+│  Like Hamiltonian Cycle but:                                    │
+│  - Edges have WEIGHTS                                           │
+│  - Goal is to MINIMIZE total weight/distance                    │
+│                                                                  │
+│  Computational Complexity:                                       │
+│  - NP-Hard problem                                              │
+│  - Brute Force: O(N!)                                           │
+│  - Dynamic Programming (Held-Karp): O(N² * 2^N)                 │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Dynamic Programming Solution (Held-Karp Algorithm)
+
+```java
+package dsa.graph.special;
+
+import java.util.Arrays;
+
+public class TravelingSalesman {
+    
+    // DP approach using bitmasking
+    // Time Complexity: O(N^2 * 2^N)
+    // Space Complexity: O(N * 2^N)
+    public int tspDP(int[][] graph) {
+        int n = graph.length;
+        // memo[i][mask] stores the minimum cost to visit all unvisited cities 
+        // starting from city 'i', where 'mask' represents visited cities.
+        int[][] memo = new int[n][1 << n];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        
+        // Start from city 0, mask = 1 (city 0 visited)
+        return solve(0, 1, graph, memo, n);
+    }
+    
+    private int solve(int pos, int mask, int[][] graph, int[][] memo, int n) {
+        // Base case: if all cities have been visited
+        if (mask == (1 << n) - 1) {
+            return graph[pos][0] != 0 ? graph[pos][0] : Integer.MAX_VALUE / 2; // Return to start
+        }
+        
+        // If already computed
+        if (memo[pos][mask] != -1) {
+            return memo[pos][mask];
+        }
+        
+        int ans = Integer.MAX_VALUE / 2;
+        
+        // Try visiting all other unvisited cities
+        for (int city = 0; city < n; city++) {
+            // If the city is NOT visited yet and there's a path
+            if ((mask & (1 << city)) == 0 && graph[pos][city] != 0) {
+                int newAns = graph[pos][city] + solve(city, mask | (1 << city), graph, memo, n);
+                ans = Math.min(ans, newAns);
+            }
+        }
+        
+        return memo[pos][mask] = ans;
+    }
+
+    public static void main(String[] args) {
+        TravelingSalesman tsp = new TravelingSalesman();
+        
+        // Adjacency matrix representation of the weighted graph
+        int[][] graph = {
+            { 0, 10, 15, 20 },
+            { 10, 0, 35, 25 },
+            { 15, 35, 0, 30 },
+            { 20, 25, 30, 0 }
+        };
+        
+        System.out.println("Minimum TSP Cost: " + tsp.tspDP(graph));
     }
 }
 ```

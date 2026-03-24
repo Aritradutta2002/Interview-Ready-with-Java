@@ -1,5 +1,15 @@
 # Floyd-Warshall Algorithm - Complete Guide
 
+## Prerequisites & Related Topics
+
+- **Single-Source Shortest Path**: [04_dijkstra.md](04_dijkstra.md) (non-negative weights), [05_bellman_ford.md](05_bellman_ford.md) (negative weights)
+- **When to Use Floyd-Warshall**: Need ALL-PAIRS shortest path (not just single source)
+- **Trade-offs**: 
+  - Dense graphs (E ≈ V²): Floyd-Warshall O(V³) often faster than running Dijkstra V times
+  - Sparse graphs (E << V²): Run Dijkstra V times is better
+  - Small graphs: Floyd-Warshall more practical
+- **Negative Cycle Detection**: Built-in via negative values on diagonal
+
 ## Table of Contents
 1. [What is Floyd-Warshall?](#what-is-floyd-warshall)
 2. [Algorithm](#algorithm)

@@ -1043,6 +1043,135 @@ Vertex 4 ->
 
 ---
 
+## Algorithm Selection Guide (Quick Reference)
+
+### I need to find... **→ Use This Algorithm**
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│                    ALGORITHM DECISION TREE                         │
+├────────────────────────────────────────────────────────────────────┤
+│                                                                    │
+│ 1. TRAVERSAL / EXPLORATION                                        │
+│    ├─ Visit all vertices once                                     │
+│    │  └─→ BFS or DFS (both O(V+E))                               │
+│    ├─ Order: level-by-level                    → BFS             │
+│    ├─ Order: deep-first                        → DFS             │
+│    └─ Need cycles detected    → DFS w/ coloring│
+│                                                                    │
+│ 2. SHORTEST PATH (Single Source S to all vertices T)              │
+│    ├─ All weights non-negative?                                  │
+│    │  ├─ YES + unweighted (weight=1)  → BFS                      │
+│    │  ├─ YES + weighted               → Dijkstra                 │
+│    │  ├─ NO (has negative)            → Bellman-Ford             │
+│    │  └─ NO + has heuristic           → A* Search                │
+│    └─ Need all-pairs shortest path    → Floyd-Warshall          │
+│                                                                    │
+│ 3. MINIMUM SPANNING TREE (MST)                                    │
+│    ├─ Need a tree with minimum total edge weight                 │
+│    ├─ Kruskal's: sort edges + Union-Find     (O(E log V))        │
+│    ├─ Prim's: grow from vertex              (O(V²) or O(E log V))│
+│    └─ Both find same total weight, different trees possible      │
+│                                                                    │
+│ 4. DEPENDENCY / ORDERING (DAG only!)                              │
+│    ├─ Linear order where u before v if edge u→v                  │
+│    ├─ Kahn's algorithm: BFS + indegree counting                  │
+│    ├─ DFS algorithm: post-order traversal                        │
+│    └─ Must verify DAG first (no cycles!)                         │
+│                                                                    │
+│ 5. STRONGLY CONNECTED COMPONENTS (SCC) [Directed only]            │
+│    ├─ Find groups of mutually reachable vertices                 │
+│    ├─ Kosaraju's: 2 DFS passes                (O(V+E))           │
+│    ├─ Tarjan's: single DFS with stack        (O(V+E))            │
+│    └─ Both find same components               │
+│                                                                    │
+│ 6. CYCLE DETECTION                                                │
+│    ├─ Undirected: DFS w/ visited tracking    (simple)            │
+│    ├─ Directed: DFS w/ 3-color scheme        (tracks recursion)  │
+│    ├─ Unweighted DAG: Topological sort       (if fails → cycle)  │
+│    └─ Negative cycle: Bellman-Ford           (x-th pass updates) │
+│                                                                    │
+│ 7. FLOW / MATCHING PROBLEMS                                       │
+│    ├─ Max flow from source to sink           → Ford-Fulkerson    │
+│    ├─ Optimized max flow                     → Edmonds-Karp/Dinic│
+│    ├─ Bipartite maximum matching             → Max-flow view     │
+│    └─ Min assignment cost                    → Min-cost max-flow │
+│                                                                    │
+│ 8. SPECIAL PROPERTIES / CHECKS                                    │
+│    ├─ Is graph bipartite?        → BFS/DFS with 2-coloring      │
+│    ├─ Are nodes in same component? → BFS/DFS once, check visited│
+│    ├─ Connected graph?            → All vertices visited in DFS  │
+│    ├─ Find bridges/articulations? → DFS + discovery times        │
+│    └─ Graph coloring (chromatic#) → Greedy or backtracking       │
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+### Shortest Path Algorithm Comparison
+
+| Algorithm | Time | Space | Weights | Use When |
+|-----------|------|-------|---------|----------|
+| **BFS** | O(V+E) | O(V) | Unweighted / unit | Simplest, fastest for unweighted |
+| **Dijkstra** | O((V+E)logV) | O(V) | Non-negative | Standard; all weights ≥ 0 |
+| **Bellman-Ford** | O(V·E) | O(V) | Any (detect -ve cycle) | Negative weights; need cycle detection |
+| **Floyd-Warshall** | O(V³) | O(V²) | Any (detect -ve cycle) | ALL-PAIRS shortest path |
+| **A*** | O((V+E)logV) | O(V) | Non-negative + heuristic | When you have heuristic (e.g., coordinates) |
+| **0-1 BFS** | O(V+E) | O(V) | Only 0 or 1 | Degenerate case; special case optimization |
+
+### When NOT to Use (Common Mistakes)
+
+```
+❌ DON'T use Dijkstra if: Graph has negative weights
+                         → Use Bellman-Ford
+
+❌ DON'T use BFS if: Edges have different weights (>1)
+                    → Use Dijkstra
+
+❌ DON'T use DFS if: You need shortest path
+                    → Use BFS or Dijkstra
+
+❌ DON'T use Topological Sort if: Graph has a cycle
+                                  → Detect cycle first
+
+❌ DON'T use Floyd-Warshall if: Graph is sparse (E << V²)
+                               → Run Dijkstra V times
+
+❌ DON'T use greedy coloring if: You need optimal (minimum) colors
+                                 → Use backtracking or exact algorithms
+```
+
+---
+
+## Common Graph Representation Trade-offs
+
+### Adjacency Matrix vs Adjacency List
+
+| Operation | Matrix | List | Recommendation |
+|-----------|--------|------|-----------------|
+| **Space** | O(V²) | O(V+E) | Use List for sparse graphs |
+| **Add Edge** | O(1) | O(1) | Matrix slightly faster; negligible |
+| **Remove Edge** | O(1) | O(degree) | Matrix faster for dense graphs |
+| **Check if edge exists** | O(1) | O(degree) | Matrix much faster |
+| **Find neighbors** | O(V) | O(degree) | List much faster |
+| **Iterate all edges** | O(V²) | O(V+E) | List much faster for sparse |
+| **Dense graph (E≈V²)** | ✅ Better | ❌ Slower | Use Matrix |
+| **Sparse graph (E<<V²)** | ❌ Wasteful | ✅ Better | Use List |
+| **Cache efficiency** | ✅ Good | ⚠️ Pointer chasing | Matrix better |
+
+### Decision: Choose Matrix if:
+- You need frequent edge lookups: `hasEdge(u, v)` one
+- Graph is dense (E > V log V)
+- Need to iterate all pairs anyway
+- Working with negative weights (easier indexing)
+
+### Decision: Choose List if:
+- Graph is sparse (E << V²)
+- Never need to lookup single edge
+- Limited memory (huge graphs)
+- Need to iterate neighbors frequently
+
+---
+
 ## Key Insights and Tips
 
 ### Choosing Graph Representation

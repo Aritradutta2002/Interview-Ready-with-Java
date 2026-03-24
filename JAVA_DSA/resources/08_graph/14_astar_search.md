@@ -1,5 +1,13 @@
 # A* Search Algorithm - Complete Guide
 
+## Prerequisites & Related Topics
+
+- **Prerequisite**: [04_dijkstra.md](04_dijkstra.md) (A* = Dijkstra + heuristic)
+- **Key Concept**: A* is optimal when heuristic is **admissible** (never overestimates true cost)
+- **No Heuristic (h=0)**: A* becomes Dijkstra's algorithm
+- **Inadmissible Heuristic**: A* runs faster but may not find optimal solution
+- **Comparison**: [02_bfs.md](02_bfs.md) (unweighted, unguided), [04_dijkstra.md](04_dijkstra.md) (weighted, unguided), A* (weighted, heuristic-guided)
+
 ## Table of Contents
 1. [What is A*?](#what-is-a)
 2. [Algorithm](#algorithm)

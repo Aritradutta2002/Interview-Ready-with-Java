@@ -1493,6 +1493,328 @@ public int multiSourceBFS(List<Integer> sources) {
 
 ---
 
+## When to Use BFS (vs Other Algorithms)
+
+| Scenario | Use BFS? | Why |
+|----------|----------|-----|
+| **Shortest path (unweighted)** | ✅ YES | BFS explores level-by-level; first arrival = shortest |
+| **Shortest path (weighted)** | ❌ NO | Use [Dijkstra](04_dijkstra.md) instead |
+| **Find cycle in undirected** | ✅ YES | BFS can detect back edges |
+| **Finding connected components** | ✅ YES | BFS explores one component, count iterations |
+| **Bipartite checking** | ✅ YES | Color with BFS; no conflicts = bipartite |
+| **Unweighted game state** | ✅ YES | Find minimum moves to reach goal state |
+| **Weighted game state** | ❌ NO | Use [A* or Dijkstra](14_astar_search.md) |
+
+## Common Mistakes & How to Avoid Them
+
+```java
+❌ MISTAKE 1: Not marking as visited WHEN ADDING to queue
+Problem: Same vertex added multiple times → infinite loop or wrong answer
+        Queue: [0, 1, 0, 2, 0, 1, 1, ...]
+
+✅ CORRECT:
+Queue<Integer> queue = new LinkedList<>();
+boolean[] visited = new boolean[numVertices];
+queue.offer(start);
+visited[start] = true;  // Mark IMMEDIATELY when adding
+
+while (!queue.isEmpty()) {
+    int u = queue.poll();
+    for (int v : getNeighbors(u)) {
+        if (!visited[v]) {
+            visited[v] = true;  // Mark BEFORE adding to queue
+            queue.offer(v);
+        }
+    }
+}
+
+❌ MISTAKE 2: Setting distance to 0 only for source
+Problem: All other nodes stay at Integer.MAX_VALUE, can't update
+        dist[0] = 0, but dist[1] = MAX causes: dist[0] + weight = overflow
+
+✅ CORRECT: Initialize all distances to -1 (unvisited), set source to 0
+
+❌ MISTAKE 3: Visiting a vertex when popping, not when adding
+Problem: Same vertex processed multiple times
+        Queue: [0, 1, 1, 1] ← vertex 1 added 3 times
+
+✅ CORRECT: Mark visited when ADDING, check visited when discovering
+
+❌ MISTAKE 4: Queue order matters
+Problem: Using Stack (DFS) instead of Queue (BFS)
+        Stack: [0, 1, 3, 2] ← depth-first, not breadth-first
+
+✅ CORRECT: Always use Queue (FIFO), never Stack (LIFO)
+```
+
+## Edge Cases to Handle
+
+```java
+// Empty graph (0 vertices)
+Graph empty = new Graph(0);
+bfs(empty, 0);  // Should handle gracefully
+
+// Single vertex
+Graph single = new Graph(1);
+bfs(single, 0);  // Result: visited[0]=true, no neighbors
+
+// Disconnected components
+Graph disconnected = new Graph(5);
+disconnected.addEdge(0, 1);
+disconnected.addEdge(2, 3);
+// vertex 4 is isolated
+bfs(disconnected, 0);  // Reaches [0, 1], misses [2, 3, 4]
+// Solution: Run BFS from each unvisited vertex to find all components
+
+// Self-loop
+Graph selfLoop = new Graph(3);
+selfLoop.addEdge(0, 0);  // Edge from 0 to itself
+bfs(selfLoop, 0);  // Should handle: visited[0] already true, skip
+
+// Multiple edges between same pair
+Graph multiEdge = new Graph(3);
+multiEdge.addEdge(0, 1);
+multiEdge.addEdge(0, 1);  // Duplicate
+// Both added to adjacency list, but visited flag prevents reprocessing
+bfs(multiEdge, 0);  // Works correctly; visits 1 only once
+```
+
+---
+
+## ADVANCED: 0-1 BFS Optimization
+
+When edges have only TWO values: **0 or 1** (not arbitrary weights), use **0-1 BFS** for O(V+E) shortest path (faster than Dijkstra O((V+E)logV)).
+
+### Key Idea
+
+```
+Standard BFS: Works for unweighted (all weights = 1)
+0-1 BFS: Works for weights ∈ {0, 1}
+
+When edge weight = 0: Push to FRONT of deque (don't increase distance)
+When edge weight = 1: Push to BACK of deque (increase distance by 1)
+
+Result → still shortest path, but O(V+E) not O(E log V)!
+```
+
+### Java Implementation
+
+```java
+package dsa.graph.extension;
+
+import java.util.*;
+
+public class ZeroOneBFS {
+    private Map<Integer, List<Pair<Integer, Integer>>> graph;
+    
+    static class Pair {
+        int neighbor, weight;
+        Pair(int neighbor, int weight) {
+            this.neighbor = neighbor;
+            this.weight = weight;
+        }
+    }
+    
+    public ZeroOneBFS(int vertices) {
+        graph = new HashMap<>();
+        for (int i = 0; i < vertices; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+    }
+    
+    public void addEdge(int from, int to, int weight) {
+        if (weight != 0 && weight != 1) {
+            throw new IllegalArgumentException("0-1 BFS: weight must be 0 or 1");
+        }
+        graph.get(from).add(new Pair(to, weight));
+    }
+    
+    public int[] zeroOneBFS(int source) {
+        int n = graph.size();
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[source] = 0;
+        
+        Deque<Integer> deque = new LinkedList<>();
+        deque.addFirst(source);
+        
+        while (!deque.isEmpty()) {
+            int u = deque.removeFirst();
+            
+            for (Pair edge : graph.get(u)) {
+                int v = edge.neighbor;
+                int w = edge.weight;
+                
+                if (dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                    
+                    // If weight 0: add to FRONT (process immediately)
+                    // If weight 1: add to BACK (process later)
+                    if (w == 0) {
+                        deque.addFirst(v);
+                    } else {
+                        deque.addLast(v);
+                    }
+                }
+            }
+        }
+        
+        return dist;
+    }
+    
+    public static void main(String[] args) {
+        ZeroOneBFS graph = new ZeroOneBFS(5);
+        graph.addEdge(0, 1, 1);
+        graph.addEdge(0, 2, 0);  // Free edge!
+        graph.addEdge(2, 1, 1);
+        graph.addEdge(1, 3, 0);
+        graph.addEdge(3, 4, 1);
+        
+        int[] distances = graph.zeroOneBFS(0);
+        System.out.println("Shortest distances: " + Arrays.toString(distances));
+        // Expected: [0, 1, 0, 1, 2]
+    }
+}
+```
+
+### When to Use
+
+| Scenario | Use 0-1 BFS? | Why |
+|----------|--------------|-----|
+| Edge weights = {0, 1} | ✅ YES | Faster than Dijkstra: O(V+E) vs O((V+E)logV) |
+| Mix of 0, 1, other weights | ❌ NO | Must use Dijkstra |
+| Cost optimization problem | ✅ YES | Model as 0-1: cheap edges (0), normal edges (1) |
+| Game state (move vs no-move) | ✅ YES | Perfect fit |
+
+---
+
+## ADVANCED: Implicit Graph & State-Space BFS
+
+When the graph is not explicitly built (vertices/edges stored in memory), but rather **generated on-the-fly** during search, use **state-space BFS**.
+
+### Key Concept
+
+```
+Explicit Graph:        Implicit/State-Space Graph:
+Vertices: [0,1,2,3]    State: Configuration or position
+Edges: hardcoded        Allowed moves: computed from state
+
+Example: 8-Puzzle
+┌─────┐                States: All valid 8-puzzle configs
+│1 2 3│                Edges: Swap empty with neighbor
+│8   4│
+│7 6 5│                BFS finds minimum moves to goal
+└─────┘
+
+Example: Word Ladder (LeetCode 127)
+Start: "hit" → End: "cog"
+States: All valid words
+Edges: Words differ by exactly 1 letter
+```
+
+### Template Code
+
+```java
+package dsa.graph.implicit;
+
+import java.util.*;
+
+public class ImplicitGraphBFS {
+    // Example: Word Ladder - find shortest path from start to end
+    
+    public int wordLadderDistance(String start, String end, Set<String> wordSet) {
+        if (!wordSet.contains(end)) return -1;
+        
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        queue.offer(start);
+        visited.add(start);
+        
+        int distance = 1;  // Start word is distance 1
+        
+        while (!queue.isEmpty()) {
+            // BFS level-by-level
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String current = queue.poll();
+                
+                if (current.equals(end)) {
+                    return distance;
+                }
+                
+                // Generate neighbors: all words 1 letter different
+                for (String neighbor : getNeighbors(current, wordSet)) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        queue.offer(neighbor);
+                    }
+                }
+            }
+            distance++;
+        }
+        
+        return -1;  // No path found
+    }
+    
+    private List<String> getNeighbors(String word, Set<String> wordSet) {
+        List<String> neighbors = new ArrayList<>();
+        char[] chars = word.toCharArray();
+        
+        for (int i = 0; i < chars.length; i++) {
+            char original = chars[i];
+            
+            for (char c = 'a'; c <= 'z'; c++) {
+                chars[i] = c;
+                String newWord = new String(chars);
+                
+                if (wordSet.contains(newWord) && !newWord.equals(word)) {
+                    neighbors.add(newWord);
+                }
+            }
+            
+            chars[i] = original;  // Restore
+        }
+        
+        return neighbors;
+    }
+    
+    public static void main(String[] args) {
+        ImplicitGraphBFS solver = new ImplicitGraphBFS();
+        
+        Set<String> dict = new HashSet<>(Arrays.asList(
+            "hot", "dot", "dog", "lot", "log", "cog"
+        ));
+        
+        int distance = solver.wordLadderDistance("hit", "cog", dict);
+        System.out.println("Shortest path distance: " + distance);
+        // Expected: 5 (hit → hot → dot → dog → cog)
+    }
+}
+```
+
+### Common Implicit Graph Problems
+
+| Problem | State Representation | Neighbors Generated By |
+|---------|---------------------|------------------------|
+| Word Ladder | Word string | 1-letter changes |
+| N-Queens | Board config or queen positions | Place queen in next row |
+| Maze shortest path | (row, col) position | Move up/down/left/right |
+| 8-Puzzle | Tile arrangement | Swap empty with adjacent |
+| Number sequence | Current number | Add/multiply/divide by fixed values |
+| Robot Path | (x, y, direction) | Move forward or rotate |
+
+### When to Use
+
+| Scenario | Use Implicit Graph? |
+|----------|---------------------|
+| Graph too large to fit in memory | ✅ YES |
+| Graph generated by rules/moves | ✅ YES |
+| Path-finding in game/puzzle | ✅ YES |
+| Explicit edges not given | ✅ YES |
+| Graph is small, all edges known | ❌ NO (wasteful) |
+
+---
+
 ## Summary
 
 ```
